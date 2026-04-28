@@ -204,3 +204,150 @@
   }, { threshold: 0.4 });
   document.querySelectorAll('[data-counter]').forEach(el => counterIO.observe(el));
 })();
+
+/* ============================================================
+   WAITLIST MODAL
+   - Opens on any [data-action="waitlist"] click
+   - POSTs as text/plain to dodge CORS preflight (Apps Script accepts
+     and parses the body as JSON server-side)
+   - Falls back to a simulated success when endpoint is the placeholder
+     so the UI is testable before the backend is wired up
+   ============================================================ */
+(() => {
+  const modal = document.getElementById('waitlist');
+  if (!modal) return;
+
+  const PLACEHOLDER = 'REPLACE_WITH_APPS_SCRIPT_URL';
+  const endpoint = modal.dataset.endpoint;
+  const isConfigured = endpoint && endpoint !== PLACEHOLDER;
+
+  const form = modal.querySelector('#waitlist-form');
+  const submitBtn = modal.querySelector('.waitlist__submit');
+  const views = {
+    form:    modal.querySelector('[data-view="form"]'),
+    success: modal.querySelector('[data-view="success"]'),
+    error:   modal.querySelector('[data-view="error"]'),
+  };
+  const errorMsg = modal.querySelector('.waitlist__error-msg');
+
+  let lastFocus = null;
+
+  function showView(name) {
+    Object.entries(views).forEach(([k, el]) => { el.hidden = (k !== name); });
+  }
+
+  function open(trigger) {
+    lastFocus = trigger || document.activeElement;
+    showView('form');
+    submitBtn.classList.remove('is-loading');
+    submitBtn.disabled = false;
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('waitlist-open');
+    setTimeout(() => {
+      const first = modal.querySelector('input, select');
+      if (first) first.focus();
+    }, 50);
+  }
+
+  function close() {
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('waitlist-open');
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  // Open triggers — any element with data-action="waitlist"
+  document.addEventListener('click', (e) => {
+    const trigger = e.target.closest('[data-action="waitlist"]');
+    if (trigger) {
+      e.preventDefault();
+      open(trigger);
+    }
+  });
+
+  // Close triggers — backdrop, close button, success/error "Done" buttons
+  modal.addEventListener('click', (e) => {
+    if (e.target.closest('[data-waitlist-close]')) {
+      e.preventDefault();
+      close();
+    }
+    if (e.target.closest('[data-waitlist-retry]')) {
+      e.preventDefault();
+      showView('form');
+      submitBtn.classList.remove('is-loading');
+      submitBtn.disabled = false;
+    }
+  });
+
+  // ESC to close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.getAttribute('aria-hidden') === 'false') {
+      close();
+    }
+  });
+
+  // Lightweight client-side validation
+  function validate(data) {
+    if (!data.name || data.name.trim().length < 2) return 'Please enter your full name.';
+    // very forgiving phone check: must contain at least 8 digits
+    const digits = (data.phone || '').replace(/\D/g, '');
+    if (digits.length < 8) return 'Please enter a valid WhatsApp number.';
+    if (!data.location || data.location.trim().length < 2) return 'Please enter your location.';
+    if (!data.category) return 'Please pick a business category.';
+    return null;
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const fd = new FormData(form);
+    const data = {
+      name:     (fd.get('name') || '').toString().trim(),
+      phone:    (fd.get('phone') || '').toString().trim(),
+      location: (fd.get('location') || '').toString().trim(),
+      category: (fd.get('category') || '').toString().trim(),
+      // Useful context for the sheet
+      submittedAt: new Date().toISOString(),
+      pageUrl: location.href,
+      userAgent: navigator.userAgent,
+    };
+
+    const err = validate(data);
+    if (err) {
+      errorMsg.textContent = err;
+      // Keep them on the form; flash the error inline by jumping the view briefly?
+      // Simpler: alert via the error view with retry — but we want them to stay on
+      // the form for fixable validation issues. Use a temporary inline notice.
+      alert(err);
+      return;
+    }
+
+    submitBtn.classList.add('is-loading');
+    submitBtn.disabled = true;
+
+    try {
+      if (!isConfigured) {
+        // Simulate success in dev (no backend wired up yet)
+        await new Promise(r => setTimeout(r, 1200));
+        console.info('[waitlist] simulated submit (no endpoint configured)', data);
+      } else {
+        // text/plain avoids a CORS preflight; Apps Script parses
+        // e.postData.contents as JSON regardless.
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(data),
+        });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const out = await res.json().catch(() => ({ ok: true }));
+        if (out && out.ok === false) throw new Error(out.error || 'Submission failed');
+      }
+      showView('success');
+    } catch (err) {
+      console.error('[waitlist] submit failed', err);
+      errorMsg.innerHTML = 'Please try again. If it keeps happening, reach us at <a href="mailto:hello@syncsalez.com">hello@syncsalez.com</a>.';
+      showView('error');
+    } finally {
+      submitBtn.classList.remove('is-loading');
+      submitBtn.disabled = false;
+    }
+  });
+})();
