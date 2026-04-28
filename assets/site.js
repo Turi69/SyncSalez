@@ -286,8 +286,10 @@
   });
 
   // Lightweight client-side validation
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   function validate(data) {
     if (!data.name || data.name.trim().length < 2) return 'Please enter your full name.';
+    if (!data.email || !EMAIL_RE.test(data.email)) return 'Please enter a valid email address.';
     // very forgiving phone check: must contain at least 8 digits
     const digits = (data.phone || '').replace(/\D/g, '');
     if (digits.length < 8) return 'Please enter a valid WhatsApp number.';
@@ -301,6 +303,7 @@
     const fd = new FormData(form);
     const data = {
       name:     (fd.get('name') || '').toString().trim(),
+      email:    (fd.get('email') || '').toString().trim(),
       phone:    (fd.get('phone') || '').toString().trim(),
       location: (fd.get('location') || '').toString().trim(),
       category: (fd.get('category') || '').toString().trim(),

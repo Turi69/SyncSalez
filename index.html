@@ -1172,9 +1172,13 @@ END HIDDEN [2026-04-28] -->
           <input id="wl-name" name="name" type="text" autocomplete="name" required />
         </div>
         <div class="field">
+          <label for="wl-email">Email</label>
+          <input id="wl-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required />
+          <small class="field__hint">We'll send your confirmation here.</small>
+        </div>
+        <div class="field">
           <label for="wl-phone">WhatsApp number</label>
           <input id="wl-phone" name="phone" type="tel" autocomplete="tel" placeholder="+234 803 000 0000" required />
-          <small class="field__hint">We'll send your confirmation to this number.</small>
         </div>
         <div class="field">
           <label for="wl-location">Location</label>
@@ -1210,7 +1214,7 @@ END HIDDEN [2026-04-28] -->
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4L19 7"/></svg>
       </div>
       <h2 class="waitlist__title">You're on the list.</h2>
-      <p class="waitlist__lead">We just sent your confirmation to WhatsApp. As soon as SyncSalez goes live, you'll be among the first to know — keep an eye on your phone.</p>
+      <p class="waitlist__lead">We just sent your confirmation to your inbox. As soon as SyncSalez goes live, you'll be among the first to know — keep an eye on your email.</p>
       <button type="button" class="btn btn--primary" data-waitlist-close>Done</button>
     </div>
 
@@ -1225,6 +1229,6 @@ END HIDDEN [2026-04-28] -->
   </div>
 </div>
 
-<script src="assets/site.js?v=4"></script>
+<script src="assets/site.js?v=5"></script>
 </body>
 </html>
