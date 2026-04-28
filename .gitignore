@@ -1,0 +1,22 @@
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.vscode/
+.idea/
+
+# Internal Claude session state
+.claude/settings.local.json
+
+# Design handoff bundles + extraction tooling (not part of the live site)
+.design-extract/
+
+# Internal product spec (not part of the live site)
+uploads/
+
+# Node (in case anyone adds tooling later)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

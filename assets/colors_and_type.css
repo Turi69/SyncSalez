@@ -1,0 +1,399 @@
+/* ============================================================
+   SyncSalez Design System — colors & type tokens
+   Sourced from the Figma "Color document" + "Typography" frames.
+   Primary brand color is Mirror Blue 500 (rgb(36,99,235)).
+   ============================================================ */
+
+/* ---------- Webfonts ---------- */
+/* Google Sans (variable, weights 400–900, optical-size 18–96, GRAD axis)
+   is the primary brand typeface — used for in-app text AND display
+   headings. Self-hosted from /fonts. Urbanist + Manrope still pulled
+   from Google Fonts for action/marketing variants. */
+@font-face {
+  font-family: 'Google Sans';
+  src: url('fonts/GoogleSans-VariableFont_GRAD_opsz_wght.ttf') format('truetype-variations'),
+       url('fonts/GoogleSans-VariableFont_GRAD_opsz_wght.ttf') format('truetype');
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap');
+
+:root {
+  /* ============================================================
+     COLOR PRIMITIVES
+     ============================================================ */
+
+  /* --- Brand: Mirror Blue (primary) --- */
+  --mirror-blue-50:  #EFF4FE;
+  --mirror-blue-100: #DCE7FD;
+  --mirror-blue-200: #B9CFFC;
+  --mirror-blue-300: #95B7FA;
+  --mirror-blue-400: #729FF7;
+  --mirror-blue-500: #2463EB; /* primary */
+  --mirror-blue-600: #1D4FBC;
+  --mirror-blue-700: #163B8D;
+  --mirror-blue-800: #0E285E;
+  --mirror-blue-900: #07142F;
+
+  /* --- Brand: Dark Sea Green (warm secondary / illustration accent) --- */
+  --dark-sea-green-50:  #FDF4EE;
+  --dark-sea-green-100: #FBE9DD;
+  --dark-sea-green-200: #F7D3BB;
+  --dark-sea-green-300: #F3BD99;
+  --dark-sea-green-400: #EFA776;
+  --dark-sea-green-500: #EC935E;
+  --dark-sea-green-600: #BD764B;
+  --dark-sea-green-700: #8E5838;
+  --dark-sea-green-800: #5E3A26;
+  --dark-sea-green-900: #2F1D13;
+
+  /* --- Neutrals: Slate --- */
+  --slate-50:  #F8FAFC;
+  --slate-100: #F1F5F9;
+  --slate-200: #E2E8F0;
+  --slate-300: #CBD5E1;
+  --slate-400: #94A3B8;
+  --slate-500: #64748B;
+  --slate-600: #475569;
+  --slate-700: #334155;
+  --slate-800: #1E293B;
+  --slate-900: #0F172A;
+
+  /* --- Neutrals: Stone (warm gray, used in marketing surfaces) --- */
+  --stone-50:  #FAFAF9;
+  --stone-100: #F5F5F4;
+  --stone-200: #E7E5E4;
+  --stone-300: #D6D3D1;
+  --stone-400: #A8A29E;
+  --stone-500: #78716C;
+  --stone-600: #57534E;
+  --stone-700: #44403C;
+  --stone-800: #292524;
+  --stone-900: #1C1917;
+  --stone-950: #0C0A09;
+
+  /* --- Semantic: Crimson (error / destructive) --- */
+  --crimson-50:  #FCE7EB;
+  --crimson-100: #F8CFD7;
+  --crimson-200: #F2A0AE;
+  --crimson-300: #EB7086;
+  --crimson-400: #E4415D;
+  --crimson-500: #DE1135;
+  --crimson-600: #B20E2A;
+  --crimson-700: #850A20;
+  --crimson-800: #590715;
+  --crimson-900: #2C030B;
+
+  /* --- Semantic: Green (success) --- */
+  --green-50:  #E7F7EA;
+  --green-100: #CEEFD5;
+  --green-200: #9DDFAC;
+  --green-300: #6DD082;
+  --green-400: #3CC059;
+  --green-500: #0BB02F;
+  --green-600: #098D26;
+  --green-700: #076A1C;
+  --green-800: #044613;
+  --green-900: #022309;
+
+  /* --- Semantic: Pastel Red (alert / warning-leaning soft alarm) --- */
+  --pastel-red-50:  #FFEEEF;
+  --pastel-red-100: #FEDDDF;
+  --pastel-red-200: #FEBABE;
+  --pastel-red-300: #FD989E;
+  --pastel-red-400: #FD767D;
+  --pastel-red-500: #FD5C63;
+  --pastel-red-700: #BE454A;
+  --pastel-red-800: #7F2E32;
+  --pastel-red-900: #3F1719;
+
+  /* --- Accent: Purple (data viz / promo) --- */
+  --purple-50:  #F1EFFF;
+  --purple-100: #E2DEFE;
+  --purple-200: #C6BDFD;
+  --purple-300: #A99DFC;
+  --purple-400: #8D7CFB;
+  --purple-500: #705BFA;
+  --purple-600: #5A49C8;
+  --purple-700: #433796;
+  --purple-800: #2D2464;
+  --purple-900: #161232;
+
+  /* --- Pure --- */
+  --white: #FFFFFF;
+  --off-white: #FCFCFC;       /* used as "on-primary" text */
+  --black: #000000;
+
+  /* ============================================================
+     SEMANTIC COLOR TOKENS
+     Map primitives → roles. Components consume these.
+     ============================================================ */
+
+  /* Surfaces */
+  --bg-app:        var(--slate-50);    /* mobile app canvas */
+  --bg-surface:    var(--white);       /* cards, sheets */
+  --bg-subtle:     var(--slate-100);   /* secondary chip / input */
+  --bg-muted:      #F0F0F0;            /* secondary button fill */
+  --bg-inverse:    var(--slate-900);
+
+  /* Foregrounds (text, icons) */
+  --fg-1:          var(--slate-900);   /* primary text */
+  --fg-2:          rgba(15,23,42,0.6); /* supporting text */
+  --fg-3:          rgba(15,23,42,0.4); /* placeholder, disabled */
+  --fg-on-primary: var(--off-white);
+  --fg-on-inverse: var(--white);
+  --fg-link:       var(--mirror-blue-500);
+
+  /* Borders */
+  --border-subtle: rgba(15,23,42,0.06);
+  --border-1:      rgba(15,23,42,0.10);
+  --border-2:      rgba(15,23,42,0.20);
+  --border-strong: var(--slate-900);
+  --focus-ring:    var(--mirror-blue-500);
+
+  /* Brand actions */
+  --primary:           var(--mirror-blue-500);
+  --primary-hover:     var(--mirror-blue-600);
+  --primary-pressed:   var(--mirror-blue-700);
+  --primary-fg:        var(--off-white);
+
+  --secondary:         var(--bg-muted);
+  --secondary-hover:   #E6E6E6;
+  --secondary-fg:      var(--slate-800);
+
+  /* Status */
+  --success:        var(--green-500);
+  --success-bg:     var(--green-50);
+  --success-fg:     var(--green-700);
+  --error:          var(--crimson-500);
+  --error-bg:       var(--crimson-50);
+  --error-fg:       var(--crimson-700);
+  --warning:        var(--dark-sea-green-500);
+  --warning-bg:     var(--dark-sea-green-50);
+  --warning-fg:     var(--dark-sea-green-700);
+  --info:           var(--mirror-blue-500);
+  --info-bg:        var(--mirror-blue-50);
+  --info-fg:        var(--mirror-blue-700);
+
+  /* Shadows — derived from rgba(15,23,42,0.04) seen heavily in Figma */
+  --shadow-xs: 0 1px 2px 0 rgba(15,23,42,0.04);
+  --shadow-sm: 0 1px 3px 0 rgba(15,23,42,0.06), 0 1px 2px -1px rgba(15,23,42,0.04);
+  --shadow-md: 0 4px 8px -2px rgba(15,23,42,0.08), 0 2px 4px -2px rgba(15,23,42,0.04);
+  --shadow-lg: 0 12px 24px -4px rgba(15,23,42,0.10), 0 4px 8px -4px rgba(15,23,42,0.06);
+  --shadow-card: 0 1px 0 0 rgba(15,23,42,0.04), 0 1px 3px 0 rgba(15,23,42,0.06);
+
+  /* ============================================================
+     RADII
+     ============================================================ */
+  --r-xs:   4px;
+  --r-sm:   8px;
+  --r-md:   12px;   /* buttons, inputs, default */
+  --r-lg:   16px;
+  --r-xl:   18px;   /* phone frame inner radius */
+  --r-2xl:  24px;
+  --r-pill: 9999px;
+
+  /* ============================================================
+     SPACING SCALE (4-pt grid)
+     ============================================================ */
+  --space-0:   0;
+  --space-1:   4px;
+  --space-2:   8px;
+  --space-3:   12px;
+  --space-4:   16px;
+  --space-5:   20px;
+  --space-6:   24px;
+  --space-8:   32px;
+  --space-10:  40px;
+  --space-12:  48px;
+  --space-16:  64px;
+
+  /* ============================================================
+     TYPOGRAPHY
+     Google Sans is the primary brand typeface, used for in-app UI
+     and display headings. Urbanist drives buttons/labels, Manrope
+     handles long-form marketing copy.
+     ============================================================ */
+
+  /* Font families */
+  --font-display:   'Google Sans', system-ui, sans-serif;
+  --font-ui:        'Google Sans', system-ui, sans-serif;       /* in-app text */
+  --font-action:    'Urbanist', 'Google Sans', system-ui, sans-serif; /* buttons, labels */
+  --font-marketing: 'Manrope', 'Google Sans', system-ui, sans-serif;
+  --font-mono:      'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Type scale — sizes from Typography frame */
+  --fs-display-xl: 96px;
+  --fs-display-lg: 80px;
+  --fs-display-md: 64px;
+  --fs-display-sm: 52px;
+
+  --fs-h1: 44px;   /* Heading large */
+  --fs-h2: 34px;
+  --fs-h3: 28px;   /* Welcome headline */
+  --fs-h4: 22px;
+  --fs-h5: 20px;
+  --fs-h6: 18px;
+
+  --fs-body-lg: 18px;   /* welcome supporting text */
+  --fs-body:    16px;   /* default body */
+  --fs-body-sm: 14px;
+  --fs-caption: 12px;
+  --fs-overline: 10px;
+
+  /* Weights */
+  --fw-regular: 400;
+  --fw-medium:  500;
+  --fw-semibold: 600;
+  --fw-bold:    700;
+
+  /* Line heights */
+  --lh-tight:   1.1;
+  --lh-snug:    1.25;
+  --lh-normal:  1.4;
+  --lh-relaxed: 1.5;
+  --lh-loose:   1.6;
+
+  /* Letter-spacing — Figma uses -0.020em on most headlines */
+  --ls-tight:  -0.020em;
+  --ls-normal: 0;
+  --ls-wide:   0.010em;
+}
+
+/* ============================================================
+   SEMANTIC TYPE CLASSES
+   Use these on real elements. They wrap the tokens above.
+   ============================================================ */
+
+.ss-display {
+  font-family: var(--font-display);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-display-md);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+  color: var(--fg-1);
+}
+
+.ss-h1 {
+  font-family: var(--font-display);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-h1);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--ls-tight);
+  color: var(--fg-1);
+}
+
+.ss-h2 {
+  font-family: var(--font-display);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-h2);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--ls-tight);
+  color: var(--fg-1);
+}
+
+.ss-h3 {
+  font-family: var(--font-display);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-h3);
+  line-height: 1.5;
+  letter-spacing: var(--ls-tight);
+  color: var(--fg-1);
+}
+
+.ss-h4 {
+  font-family: var(--font-ui);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-h4);
+  line-height: var(--lh-normal);
+  letter-spacing: var(--ls-tight);
+  color: var(--fg-1);
+}
+
+.ss-h5 {
+  font-family: var(--font-ui);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-h5);
+  line-height: var(--lh-normal);
+  letter-spacing: var(--ls-tight);
+  color: var(--fg-1);
+}
+
+.ss-h6 {
+  font-family: var(--font-ui);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-h6);
+  line-height: var(--lh-normal);
+  letter-spacing: var(--ls-tight);
+  color: var(--fg-1);
+}
+
+.ss-body-lg {
+  font-family: var(--font-ui);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-body-lg);
+  line-height: var(--lh-relaxed);
+  letter-spacing: var(--ls-tight);
+  color: var(--fg-1);
+}
+
+.ss-body {
+  font-family: var(--font-ui);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-body);
+  line-height: var(--lh-relaxed);
+  color: var(--fg-1);
+}
+
+.ss-body-sm {
+  font-family: var(--font-ui);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-relaxed);
+  color: var(--fg-2);
+}
+
+.ss-caption {
+  font-family: var(--font-ui);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-caption);
+  line-height: var(--lh-normal);
+  letter-spacing: var(--ls-tight);
+  color: var(--fg-2);
+}
+
+.ss-overline {
+  font-family: var(--font-ui);
+  font-weight: var(--fw-medium);
+  font-size: var(--fs-overline);
+  line-height: var(--lh-normal);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+}
+
+/* Action / button text — Urbanist 700 16px is the canonical button. */
+.ss-action {
+  font-family: var(--font-action);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-body);
+  line-height: var(--lh-relaxed);
+  letter-spacing: 0;
+}
+
+.ss-label {
+  font-family: var(--font-action);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-relaxed);
+  color: var(--fg-1);
+  opacity: 0.85;
+}
+
+.ss-link {
+  color: var(--fg-link);
+  text-decoration: none;
+  font-weight: var(--fw-semibold);
+}
+.ss-link:hover { text-decoration: underline; }
