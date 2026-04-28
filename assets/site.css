@@ -1303,3 +1303,260 @@ body.waitlist-open { overflow: hidden; }
   .waitlist__panel { padding: 32px 22px 24px; border-radius: 18px; }
   .waitlist__title { font-size: 26px; }
 }
+
+/* ============================================================
+   RESPONSIVE LAYER
+   Layered at the end so it wins the cascade against earlier rules
+   without rewriting them. Mobile-first additions, plus targeted
+   overrides for inline grids that can't be touched in HTML.
+   ============================================================ */
+
+/* Prevent any element from creating a horizontal scrollbar at any size */
+html, body { overflow-x: hidden; max-width: 100%; }
+
+/* Fluid gutter + section padding so the design breathes everywhere
+   from 320px phones to 4K monitors */
+:root {
+  --gutter: clamp(16px, 4vw, 32px);
+}
+.section    { padding: clamp(56px, 8vw, 96px) 0; }
+.section--tight { padding: clamp(40px, 6vw, 64px) 0; }
+.section--lg    { padding: clamp(72px, 10vw, 128px) 0; }
+
+/* Headings — tighten the lower clamp bound so very small screens
+   don't get truncated or wrap awkwardly */
+@media (max-width: 600px) {
+  .h-display { font-size: clamp(36px, 11vw, 56px); line-height: 1.04; letter-spacing: -0.030em; }
+  .h-1       { font-size: clamp(30px, 9vw, 44px); line-height: 1.06; }
+  .h-2       { font-size: clamp(26px, 7.5vw, 36px); line-height: 1.10; }
+  .h-3       { font-size: clamp(20px, 5.5vw, 26px); }
+}
+
+/* Inline 4-column grids (about-team, etc) — collapse to 2 then 1 */
+@media (max-width: 900px) {
+  [style*="grid-template-columns:repeat(4,1fr)"],
+  [style*="grid-template-columns: repeat(4, 1fr)"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+@media (max-width: 520px) {
+  [style*="grid-template-columns:repeat(4,1fr)"],
+  [style*="grid-template-columns: repeat(4, 1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Inline 3-column grids — collapse to 1 column on phones */
+@media (max-width: 720px) {
+  [style*="grid-template-columns:repeat(3,1fr)"],
+  [style*="grid-template-columns: repeat(3, 1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Inline 2-column grids (both `1fr 1fr` and `repeat(2,1fr)` syntaxes)
+   should stack on phones. Exception: tiny pieces grids (e.g.
+   `.pieces-grid` at 148px wide) which are mini-illustrations inside
+   phone mockups — those carry their own fixed width and shouldn't
+   collapse. */
+@media (max-width: 640px) {
+  [style*="grid-template-columns:1fr 1fr"]:not(.pieces-grid),
+  [style*="grid-template-columns: 1fr 1fr"]:not(.pieces-grid),
+  [style*="grid-template-columns:repeat(2,1fr)"]:not(.pieces-grid),
+  [style*="grid-template-columns: repeat(2, 1fr)"]:not(.pieces-grid) {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+}
+
+/* Hero — keep dramatic on desktop, tighten on small phones */
+@media (max-width: 600px) {
+  .hero--image { padding: 8px 8px 0; }
+  .hero--image .hero__image {
+    height: auto;
+    min-height: clamp(480px, 78vh, 640px);
+    max-height: none;
+    border-radius: 14px;
+  }
+  .hero__content { padding: 56px 20px; }
+  .hero--image .hero__title { font-size: clamp(32px, 8.5vw, 44px); margin-bottom: 20px; max-width: none; }
+  .hero--image .hero__lead { font-size: 15px; line-height: 1.55; max-width: 38ch; margin-bottom: 32px; }
+  .hero--image .hero__ctas { gap: 10px; width: 100%; }
+  .hero--image .hero__ctas .btn-pill { width: 100%; max-width: 320px; height: 52px; }
+}
+
+/* Marquee — slow it down a touch on phones so it isn't dizzying */
+@media (max-width: 600px) {
+  .marquee__track { animation-duration: 32s; }
+  .marquee__item { font-size: 14px; }
+}
+
+/* Feature blocks — already collapse to 1col at 900, but make sure the
+   visual side never overflows on tiny screens */
+@media (max-width: 600px) {
+  .feature-block .visual,
+  .feature-block--rev .visual {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+  }
+  .phone {
+    width: min(280px, 80vw);
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* Sec-head heading + lead alignment on small screens */
+@media (max-width: 700px) {
+  .sec-head .meta-num,
+  .sec-head .meta-row { margin-bottom: 8px; }
+  .sec-head h2 { word-break: break-word; }
+}
+
+/* Pricing toggle — make tap target comfortable on phones */
+@media (max-width: 600px) {
+  .toggle button { min-height: 44px; padding: 8px 16px; }
+}
+
+/* FAQ — reduce question font and add comfortable tap target */
+@media (max-width: 600px) {
+  .faq__q { padding: 18px 0; gap: 14px; min-height: 52px; }
+  .faq__q span:first-child { font-size: 17px; line-height: 1.35; }
+  .faq__a-inner { padding: 0 0 18px; }
+  .faq__a-inner p { font-size: 14px; }
+}
+
+/* Big-cta band — never let the hero CTA buttons go full-edge */
+@media (max-width: 700px) {
+  .big-cta { padding: clamp(56px, 10vw, 96px) 0; }
+  .big-cta .container > [style*="display:flex"][style*="justify-content:center"] {
+    flex-direction: column;
+    align-items: center;
+  }
+  .big-cta .btn { width: 100%; max-width: 320px; justify-content: center; }
+}
+
+/* Footer — go from 5-col → 2-col @ 1000 (already) → 1-col @ 480 */
+@media (max-width: 480px) {
+  .footer__top { grid-template-columns: 1fr !important; gap: 32px; }
+  .footer__bottom { flex-direction: column; gap: 12px; align-items: flex-start; }
+}
+
+/* Sticky bottom-right CTA — keep clear of the bottom on phones */
+@media (max-width: 720px) {
+  .sticky-cta { right: 12px; bottom: 12px; padding: 12px 18px; font-size: 14px; }
+}
+
+/* Waitlist modal — prevent iOS Safari auto-zoom (input ≥16px) and
+   make the modal scrollable when keyboard is open */
+.field input,
+.field select {
+  font-size: 16px;  /* iOS won't zoom on focus when ≥16px */
+}
+@media (max-width: 480px) {
+  .waitlist { padding: 8px; align-items: flex-start; padding-top: 24px; }
+  .waitlist__panel { padding: 28px 20px 22px; max-height: calc(100dvh - 32px); }
+  .waitlist__title { font-size: 24px; }
+  .waitlist__lead { font-size: 14px; margin-bottom: 22px; }
+  .waitlist__close { top: 10px; right: 10px; width: 32px; height: 32px; }
+  .waitlist__pill { font-size: 11px; padding: 5px 10px; margin-bottom: 14px; }
+}
+
+/* Standalone pricing page card list — readable on phones */
+@media (max-width: 600px) {
+  .price-card { padding: 28px 22px; }
+  .price-num { font-size: 34px; }
+  .price-num small { font-size: 13px; }
+  .price-feat li { font-size: 14px; }
+}
+
+/* Coming-soon page hero block + 3-up cards — already handled by global
+   inline-grid override above, but tighten heading wrap */
+@media (max-width: 600px) {
+  .section--lg + .section .container > [style*="display:grid;grid-template-columns:repeat(3"] { gap: 16px !important; }
+}
+
+/* Modal CTA in band-blue / band-dark sections — center stack */
+@media (max-width: 600px) {
+  .band-blue .btn, .band-dark .btn { padding-left: 22px; padding-right: 22px; }
+}
+
+/* About-page team avatars — when 4-col collapses, keep them 1:1 and centered */
+@media (max-width: 520px) {
+  .container [style*="grid-template-columns:repeat(4,1fr)"] > div {
+    max-width: 280px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* Feature pages — keep how-it-works 2-col on tablets, stack on phones.
+   Captured above by the generic 1fr 1fr → 1fr at 640px, but enforce */
+@media (max-width: 640px) {
+  .features-offline .container > [style*="display:grid;grid-template-columns:1fr 1fr"],
+  .features-theft .container > [style*="display:grid;grid-template-columns:1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Feature-block visual demos (theft-visual, stock-visual, etc.) carry
+   inline padding of 32-48px and contain fixed-width 200px sub-cards.
+   On phones the parent gets full-bleed but those numbers still overflow.
+   Shrink padding aggressively and let inner cards auto-size. */
+@media (max-width: 700px) {
+  .feature-block .visual,
+  .feature-block--rev .visual {
+    padding: 24px 16px !important;
+  }
+}
+@media (max-width: 520px) {
+  .feature-block .visual,
+  .feature-block--rev .visual {
+    padding: 20px 12px !important;
+  }
+  /* Two-up card visuals — shrink to fit instead of stacking, looks
+     better as a side-by-side comparison on small screens */
+  .theft-visual { gap: 10px !important; }
+  .theft-visual > div {
+    width: calc(50% - 5px) !important;
+    padding: 12px !important;
+  }
+  .theft-visual > div [style*="font-size:24px"] { font-size: 18px !important; }
+  /* Stock visual — center the carton illustration */
+  .stock-visual > * { max-width: 100%; }
+  /* Store visual — stack the connector boxes */
+  .store-visual {
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+  }
+  /* Branches visual — black panel content, give it room */
+  .branches-visual { padding: 18px !important; }
+}
+
+/* Checkout / lookup mini-visuals (in 2-col feature blocks) — already
+   collapse via the global 1fr 1fr override, but ensure the inner
+   aspect-ratio frame doesn't blow out. */
+@media (max-width: 640px) {
+  .checkout-visual, .lookup-visual {
+    aspect-ratio: 4 / 3 !important;
+  }
+}
+
+/* Stat / phone in offline-sales demo — keep proportional */
+@media (max-width: 520px) {
+  .phone { width: min(260px, 78vw) !important; }
+  .phone__screen { font-size: 13px; }
+}
+
+/* Reduced motion — respect user preference globally */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .marquee__track { animation: none !important; }
+  .dot-pulse::after { animation: none !important; }
+}
