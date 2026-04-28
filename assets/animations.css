@@ -107,25 +107,30 @@
 }
 
 /* ============ 3. PROFIT ============ */
+/* Uses pathLength="100" on .chart-line so the dash math is normalized
+   to a 0-100 scale regardless of the path's true geometric length —
+   the draw spans the whole line across the full animation duration. */
+.profit-chart .chart-line {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+}
 .is-in .profit-chart .chart-line {
-  stroke-dasharray: 600;
-  stroke-dashoffset: 600;
-  animation: sn-line-draw 1.8s cubic-bezier(.2,.7,.2,1) .3s forwards;
+  animation: sn-line-draw 2s cubic-bezier(.2,.7,.2,1) .3s forwards;
 }
 @keyframes sn-line-draw { to { stroke-dashoffset: 0; } }
 .is-in .profit-chart .chart-area {
   opacity: 0;
-  animation: sn-fade-in 1.4s ease-out 1.4s forwards;
+  animation: sn-fade-in 1.2s ease-out 1.6s forwards;
 }
 @keyframes sn-fade-in { to { opacity: 1; } }
 .is-in .profit-chart .chart-dot {
   opacity: 0;
-  animation: sn-dot-in .5s ease-out 1.9s forwards;
+  animation: sn-dot-in .45s ease-out 2.1s forwards;
   transform-origin: 320px 18px;
 }
 .is-in .profit-chart .chart-dot-halo {
   opacity: 0;
-  animation: sn-dot-in .5s ease-out 1.9s forwards, sn-halo-pulse 2s ease-in-out 2.4s infinite;
+  animation: sn-dot-in .45s ease-out 2.1s forwards, sn-halo-pulse 2s ease-in-out 2.6s infinite;
   transform-origin: 320px 18px;
 }
 @keyframes sn-dot-in {
