@@ -1087,6 +1087,18 @@ body.menu-open .nav-overlay {
 }
 
 /* ============================================================
+   HIDE ALL SCROLLBARS (scroll still works — only the visual is gone)
+   ============================================================ */
+* {
+  scrollbar-width: none;       /* Firefox */
+  -ms-overflow-style: none;    /* IE / old Edge */
+}
+*::-webkit-scrollbar { display: none; width: 0; height: 0; }
+html, body { scrollbar-width: none; -ms-overflow-style: none; }
+html::-webkit-scrollbar,
+body::-webkit-scrollbar { display: none; width: 0; height: 0; }
+
+/* ============================================================
    WAITLIST MODAL
    ============================================================ */
 .waitlist {

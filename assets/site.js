@@ -207,18 +207,110 @@
 
 /* ============================================================
    WAITLIST MODAL
-   - Opens on any [data-action="waitlist"] click
+   - Self-injects on every page so "Get started" / "Join waitlist"
+     CTAs open it in place — no need to navigate home first.
+   - Opens on any [data-action="waitlist"] click, or on page load if
+     the URL hash is #waitlist (so cross-page links can target it).
    - POSTs as text/plain to dodge CORS preflight (Apps Script accepts
-     and parses the body as JSON server-side)
-   - Falls back to a simulated success when endpoint is the placeholder
-     so the UI is testable before the backend is wired up
+     and parses the body as JSON server-side).
    ============================================================ */
 (() => {
-  const modal = document.getElementById('waitlist');
+  const WAITLIST_ENDPOINT = 'https://script.google.com/macros/s/AKfycbx2By9utbTNRMvfWzyRge0Dc3O6QWIjLOfs715Y1-lJvmR5rMEix3NMt8WbWmPK5lRh/exec';
+
+  const MODAL_HTML = `
+<div class="waitlist" id="waitlist" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="waitlist-title">
+  <div class="waitlist__backdrop" data-waitlist-close></div>
+  <div class="waitlist__panel" role="document">
+    <button class="waitlist__close" aria-label="Close" data-waitlist-close>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 3 L13 13 M13 3 L3 13"/></svg>
+    </button>
+
+    <div class="waitlist__view" data-view="form">
+      <span class="waitlist__pill"><span class="dot-pulse"></span> Coming soon</span>
+      <h2 id="waitlist-title" class="waitlist__title">Be first in line.</h2>
+      <p class="waitlist__lead">SyncSalez is launching soon. Join the waitlist and you'll be among the first to know — plus you get founding-merchant perks and special early access reserved for the list.</p>
+
+      <form class="waitlist__form" id="waitlist-form" novalidate>
+        <div class="field">
+          <label for="wl-name">Full name</label>
+          <input id="wl-name" name="name" type="text" autocomplete="name" required />
+        </div>
+        <div class="field">
+          <label for="wl-email">Email</label>
+          <input id="wl-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required />
+          <small class="field__hint">We'll send your confirmation here.</small>
+        </div>
+        <div class="field">
+          <label for="wl-phone">WhatsApp number</label>
+          <input id="wl-phone" name="phone" type="tel" autocomplete="tel" placeholder="+234 803 000 0000" required />
+        </div>
+        <div class="field">
+          <label for="wl-location">Location</label>
+          <input id="wl-location" name="location" type="text" placeholder="City, State" required />
+        </div>
+        <div class="field">
+          <label for="wl-category">Business category</label>
+          <select id="wl-category" name="category" required>
+            <option value="">Select your business type</option>
+            <option>Provision stores &amp; supermarkets</option>
+            <option>Pharmacies</option>
+            <option>Fashion &amp; cosmetics</option>
+            <option>Food &amp; drinks</option>
+            <option>Electronics</option>
+            <option>Building materials</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <button type="submit" class="waitlist__submit">
+          <span class="waitlist__submit-text">Join the waitlist</span>
+          <span class="waitlist__submit-loading">
+            <span class="spinner" aria-hidden="true"></span>
+            Submitting…
+          </span>
+        </button>
+        <p class="waitlist__note">By joining, you agree we may contact you about SyncSalez. We never share your info.</p>
+      </form>
+    </div>
+
+    <div class="waitlist__view" data-view="success" hidden>
+      <div class="waitlist__icon waitlist__icon--ok" aria-hidden="true">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4L19 7"/></svg>
+      </div>
+      <h2 class="waitlist__title">You're on the list.</h2>
+      <p class="waitlist__lead">We just sent your confirmation to your inbox. As soon as SyncSalez goes live, you'll be among the first to know — keep an eye on your email.</p>
+      <button type="button" class="btn btn--primary" data-waitlist-close>Done</button>
+    </div>
+
+    <div class="waitlist__view" data-view="error" hidden>
+      <div class="waitlist__icon waitlist__icon--err" aria-hidden="true">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v5"/><circle cx="12" cy="16" r="0.5"/></svg>
+      </div>
+      <h2 class="waitlist__title">Something went wrong.</h2>
+      <p class="waitlist__lead waitlist__error-msg">Please try again. If it keeps happening, reach us at <a href="mailto:hello@syncsalez.com">hello@syncsalez.com</a>.</p>
+      <button type="button" class="btn btn--primary" data-waitlist-retry>Try again</button>
+    </div>
+  </div>
+</div>`;
+
+  // Inject the modal into every page that loads this script (idempotent —
+  // if a page already has #waitlist in its source, we leave it alone).
+  function injectModal() {
+    if (document.getElementById('waitlist')) return document.getElementById('waitlist');
+    const wrap = document.createElement('div');
+    wrap.innerHTML = MODAL_HTML.trim();
+    const node = wrap.firstElementChild;
+    document.body.appendChild(node);
+    return node;
+  }
+
+  const modal = injectModal();
   if (!modal) return;
 
   const PLACEHOLDER = 'REPLACE_WITH_APPS_SCRIPT_URL';
-  const endpoint = modal.dataset.endpoint;
+  // Endpoint can be overridden by a data-endpoint attribute on the modal
+  // (legacy support); otherwise we use the constant defined above.
+  const endpoint = modal.dataset.endpoint || WAITLIST_ENDPOINT;
   const isConfigured = endpoint && endpoint !== PLACEHOLDER;
 
   const form = modal.querySelector('#waitlist-form');
@@ -353,4 +445,16 @@
       submitBtn.disabled = false;
     }
   });
+
+  // Auto-open if the URL hash is #waitlist (e.g. user arrived via a
+  // cross-page link). We listen on hashchange too so in-page anchor
+  // navigations work even after initial load.
+  function maybeOpenFromHash() {
+    if (location.hash === '#waitlist' && modal.getAttribute('aria-hidden') === 'true') {
+      open(null);
+    }
+  }
+  window.addEventListener('hashchange', maybeOpenFromHash);
+  // Defer one frame so the page is fully laid out before the modal animation runs.
+  requestAnimationFrame(maybeOpenFromHash);
 })();
