@@ -242,9 +242,15 @@
       <p class="waitlist__lead">SyncSalez is launching soon. Join the waitlist and you'll be among the first to know — plus you get founding-merchant perks and special early access reserved for the list.</p>
 
       <form class="waitlist__form" id="waitlist-form" novalidate>
-        <div class="field" data-field="name">
-          <label for="wl-name">Full name</label>
-          <input id="wl-name" name="name" type="text" autocomplete="name" required />
+        <div class="field-row" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start;">
+          <div class="field" data-field="firstName" style="min-width:0;">
+            <label for="wl-fname">First name</label>
+            <input id="wl-fname" name="firstName" type="text" autocomplete="given-name" required />
+          </div>
+          <div class="field" data-field="lastName" style="min-width:0;">
+            <label for="wl-lname">Last name</label>
+            <input id="wl-lname" name="lastName" type="text" autocomplete="family-name" required />
+          </div>
         </div>
         <div class="field" data-field="email">
           <label for="wl-email">Email</label>
@@ -426,7 +432,8 @@
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   function validate(data) {
     const mode = modal.dataset.capture || 'full';
-    if (!data.name || data.name.trim().length < 2) return 'Please enter your full name.';
+    if (!data.firstName || data.firstName.trim().length < 1) return 'Please enter your first name.';
+    if (!data.lastName || data.lastName.trim().length < 1) return 'Please enter your last name.';
     if (!data.email || !EMAIL_RE.test(data.email)) return 'Please enter a valid email address.';
     if (mode !== 'email') {
       // very forgiving phone check: must contain at least 8 digits
@@ -444,7 +451,8 @@
     e.preventDefault();
     const fd = new FormData(form);
     const data = {
-      name:     (fd.get('name') || '').toString().trim(),
+      firstName: (fd.get('firstName') || '').toString().trim(),
+      lastName:  (fd.get('lastName') || '').toString().trim(),
       email:    (fd.get('email') || '').toString().trim(),
       phone:    (fd.get('phone') || '').toString().trim(),
       location: (fd.get('location') || '').toString().trim(),

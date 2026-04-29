@@ -32,7 +32,7 @@ function doPost(e) {
     const data = JSON.parse(e.postData.contents || '{}');
 
     // Light server-side validation (the client validates too)
-    const required = ['name', 'email', 'phone', 'location', 'category'];
+    const required = ['firstName', 'lastName', 'email', 'phone', 'location', 'category'];
     for (const k of required) {
       if (!data[k] || String(data[k]).trim().length < 2) {
         return jsonOut({ ok: false, error: 'Missing field: ' + k });
@@ -66,15 +66,16 @@ function appendToSheet_(data) {
   if (!sheet) {
     sheet = ss.insertSheet(SHEET_NAME);
     sheet.appendRow([
-      'Submitted at', 'Full name', 'Email', 'WhatsApp', 'Location',
+      'Submitted at', 'First name', 'Last name', 'Email', 'WhatsApp', 'Location',
       'Business category', 'Page URL', 'User agent',
     ]);
-    sheet.getRange(1, 1, 1, 8).setFontWeight('bold');
+    sheet.getRange(1, 1, 1, 9).setFontWeight('bold');
     sheet.setFrozenRows(1);
   }
   sheet.appendRow([
     new Date(),
-    data.name,
+    data.firstName,
+    data.lastName,
     data.email,
     normalizePhone_(data.phone),
     data.location,
@@ -92,7 +93,7 @@ function appendToSheet_(data) {
 // No setup needed beyond authorizing the script.
 // -----------------------------------------------------------------------------
 function sendEmail_(data) {
-  const firstName = (data.name || '').trim().split(/\s+/)[0] || 'there';
+  const firstName = (data.firstName || '').trim() || 'there';
 
   const subject = 'You\'re on the SyncSalez waitlist 🎉';
 

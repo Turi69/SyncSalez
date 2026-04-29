@@ -1881,6 +1881,24 @@ body.waitlist-open { overflow: hidden; }
 
 /* Form */
 .waitlist__form { display: flex; flex-direction: column; gap: 16px; }
+
+/* Side-by-side field pair (first + last name).
+   Uses CSS Grid for mathematically equal columns; collapses to a single
+   column below 480px to match the modal's existing mobile breakpoint. */
+.waitlist__form .field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  align-items: start;
+}
+.waitlist__form .field-row > .field { min-width: 0; }
+@media (max-width: 480px) {
+  .waitlist__form .field-row {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+}
+
 .field { display: flex; flex-direction: column; gap: 6px; }
 .field label {
   font-family: var(--font-action);
