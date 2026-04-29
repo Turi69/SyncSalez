@@ -397,3 +397,59 @@
   font-weight: var(--fw-semibold);
 }
 .ss-link:hover { text-decoration: underline; }
+
+/* ============================================================
+   DARK THEME — semantic token overrides
+   Mapped from the Figma "dark" mode export. Primitives stay the
+   same; only the semantic layer flips. Status hues lift one shade
+   (500 → 400) to maintain contrast on dark surfaces.
+   ============================================================ */
+[data-theme="dark"] {
+  /* Surfaces */
+  --bg-app:        var(--slate-900);     /* #0F172A — page canvas */
+  --bg-surface:    var(--slate-800);     /* #1E293B — cards, sheets */
+  --bg-subtle:     var(--slate-700);     /* #334155 — secondary chip / input */
+  --bg-muted:      var(--slate-700);
+  --bg-inverse:    var(--slate-50);
+
+  /* Foregrounds (slate-50 with alpha tiers) */
+  --fg-1:          var(--slate-50);                    /* primary text */
+  --fg-2:          rgba(248,250,252,0.60);             /* supporting */
+  --fg-3:          rgba(248,250,252,0.45);             /* tertiary / disabled */
+  --fg-on-primary: var(--off-white);
+  --fg-on-inverse: var(--slate-900);
+  --fg-link:       var(--mirror-blue-300, #95B7FA);    /* lifted for contrast */
+
+  /* Borders — slate-50 at low alpha replaces the dark-on-light pattern */
+  --border-subtle: rgba(248,250,252,0.06);
+  --border-1:      rgba(248,250,252,0.10);
+  --border-2:      rgba(248,250,252,0.20);
+  --border-strong: var(--slate-50);
+  --focus-ring:    var(--mirror-blue-300, #95B7FA);
+
+  /* Brand actions — primary stays Mirror Blue 500 in both themes */
+  --secondary:         var(--slate-700);
+  --secondary-hover:   var(--slate-600);
+  --secondary-fg:      var(--slate-50);
+
+  /* Status — lifted one shade for legibility on dark surfaces */
+  --success:        var(--green-400);
+  --success-bg:     rgba(11,176,47,0.10);
+  --success-fg:     var(--green-300);
+  --error:          var(--crimson-400);
+  --error-bg:       rgba(222,17,53,0.10);
+  --error-fg:       var(--crimson-300);
+  --warning:        var(--dark-sea-green-400);
+  --warning-bg:     rgba(236,147,94,0.10);
+  --warning-fg:     var(--dark-sea-green-300);
+  --info:           var(--mirror-blue-400);
+  --info-bg:        rgba(36,99,235,0.10);
+  --info-fg:        var(--mirror-blue-300);
+
+  /* Shadows — on dark, elevation reads as a light glow with rising alpha */
+  --shadow-xs: 0 1px 2px 0 rgba(0,0,0,0.40);
+  --shadow-sm: 0 1px 3px 0 rgba(0,0,0,0.45), 0 1px 2px -1px rgba(0,0,0,0.30);
+  --shadow-md: 0 4px 8px -2px rgba(0,0,0,0.50), 0 2px 4px -2px rgba(0,0,0,0.30);
+  --shadow-lg: 0 12px 24px -4px rgba(0,0,0,0.55), 0 4px 8px -4px rgba(0,0,0,0.35);
+  --shadow-card: 0 1px 0 0 rgba(248,250,252,0.04), 0 1px 3px 0 rgba(0,0,0,0.40);
+}

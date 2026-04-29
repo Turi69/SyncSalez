@@ -1,5 +1,12 @@
 // SyncSalez site interactions
 
+// Theme — locked to light for now. Dark theme tokens remain wired up in
+// site.css under [data-theme="dark"] for when we re-enable the toggle.
+(function () {
+  document.documentElement.setAttribute('data-theme', 'light');
+  try { localStorage.removeItem('ss-theme'); } catch (e) {}
+})();
+
 (function () {
   // FAQ accordion
   document.addEventListener('click', (e) => {
@@ -122,6 +129,10 @@
   window.addEventListener('resize', () => {
     if (window.innerWidth > 980 && document.body.classList.contains('menu-open')) closeMenu();
   });
+
+  // Theme toggle disabled — site is locked to light mode for now.
+  // Remove any toggle that an older cached site.js may have injected.
+  document.querySelectorAll('.theme-toggle').forEach(el => el.remove());
 
   // Nav dropdowns — open on click (not hover)
   const dropdowns = document.querySelectorAll('.nav__item.has-dropdown');

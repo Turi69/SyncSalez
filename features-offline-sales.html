@@ -4,7 +4,9 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Offline sales — SyncSalez</title>
-<link rel="stylesheet" href="assets/site.css?v=17" />
+<meta name="description" content="Your shop runs with or without internet. Every sale records on the phone the moment it happens. SyncSalez syncs in the background once signal returns." />
+<link rel="stylesheet" href="assets/site.css?v=41" />
+<script>document.documentElement.setAttribute('data-theme','light');</script>
 </head>
 <body>
 <!-- ============================================================
@@ -37,7 +39,7 @@
       SyncSalez
     </a>
     <div class="nav__links">
-      <div class="nav__item has-dropdown">
+      <div class="nav__item has-dropdown" style="display:none">
         Features <svg class="chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 4.5l3 3 3-3"/></svg>
         <div class="dropdown dropdown--two-col">
           <a href="features-offline-sales.html">Offline sales</a>
@@ -50,8 +52,8 @@
           <a href="coming-soon.html?page=Payments">Payments</a>
         </div>
       </div>
-      <a class="nav__item" href="pricing.html">Pricing</a>
-      <div class="nav__item has-dropdown">
+      <a class="nav__item" href="pricing.html" style="display:none">Pricing</a>
+      <div class="nav__item has-dropdown" style="display:none">
         For your business <svg class="chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 4.5l3 3 3-3"/></svg>
         <div class="dropdown">
           <a href="coming-soon.html?page=Provision+stores+supermarkets">Provision stores &amp; supermarkets</a>
@@ -62,7 +64,7 @@
           <a href="coming-soon.html?page=Building+materials">Building materials</a>
         </div>
       </div>
-      <div class="nav__item has-dropdown">
+      <div class="nav__item has-dropdown" style="display:none">
         Learn <svg class="chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 4.5l3 3 3-3"/></svg>
         <div class="dropdown">
           <a href="coming-soon.html?page=Blog">Blog</a>
@@ -73,7 +75,7 @@
           <a href="coming-soon.html?page=Reports">Reports</a>
         </div>
       </div>
-      <div class="nav__item has-dropdown">
+      <div class="nav__item has-dropdown" style="display:none">
         Company <svg class="chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 4.5l3 3 3-3"/></svg>
         <div class="dropdown">
           <a href="about.html">About us</a>
@@ -86,9 +88,9 @@
       </div>
     </div>
     <div class="nav__cta">
-      <a class="nav__login" href="coming-soon.html?page=Login">Login</a>
+      <a class="nav__login" href="coming-soon.html?page=Login" style="display:none">Login</a>
       <a class="btn btn--primary btn--sm" href="#waitlist" data-action="waitlist">
-        Get started
+        Join the waitlist
         <span class="arr"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 9 L9 3 M5 3 H9 V7"/></svg></span>
       </a>
     </div>
@@ -102,47 +104,67 @@
   <div class="container">
     <div style="max-width:880px;">
       <div class="meta mb-24"><span>Feature · Offline sales</span></div>
-      <h1 class="h-display" style="margin-bottom:28px;">Sell when the<br/>network is down.</h1>
-      <p class="lead" style="max-width:54ch;margin-bottom:36px;">Networks fail. Power goes off. Your shop should keep moving. SyncSalez records every sale on your phone, even with zero network. The app syncs in the background when signal returns. No spinning circles. No lost sales.</p>
-      <a class="btn btn--primary" href="#waitlist" data-action="waitlist">Get started <span class="arr"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 9 L9 3 M5 3 H9 V7"/></svg></span></a>
+      <h1 class="h-display" style="margin-bottom:28px;">Your shop runs.<br/>With or without internet.</h1>
+      <p class="lead" style="max-width:62ch;margin-bottom:36px;">Every sale records on your phone the moment it happens. SyncSalez sends it to the cloud in the background once signal returns. No frozen screens. No lost transactions. No excuses to your customer.</p>
+      <a class="btn btn--primary" href="#waitlist" data-action="waitlist">Join the waitlist <span class="arr"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 9 L9 3 M5 3 H9 V7"/></svg></span></a>
     </div>
   </div>
 </section>
 
 <section class="section band-paper">
   <div class="container">
-    <div class="sec-head"><div><span class="meta-num">The problem</span></div><h2 class="h-2">When the network drops, most apps drop the sale.</h2></div>
+    <div class="sec-head"><div><span class="meta-num">The cost</span></div><h2 class="h-2">What an internet outage costs your shop.</h2></div>
+    <p style="font-family:var(--font-marketing);font-size:18px;line-height:1.65;color:var(--ink-2);max-width:72ch;margin:0 0 28px;">A cloud-only POS freezes the moment your bars drop to zero. Customers walk away. Sales go unrecorded. Stock numbers drift out of sync. By the time the network returns, you have lost three things at once: revenue, customer trust, and accurate records.</p>
+    <p style="font-family:var(--font-marketing);font-size:18px;line-height:1.65;color:var(--ink-2);max-width:72ch;margin:0 0 48px;">Most Nigerian merchants lose between 4 and 12 sales every week to network failures. At an average ticket of ₦3,500, a single shop loses ₦56,000 to ₦168,000 a month to dropped transactions alone. Multiply this across a small chain and the loss reaches six figures within a week.</p>
     <div class="cards-3">
-      <div class="r-card"><div class="num">01</div><h4 class="h-3">Network drops mid-sale.</h4><p>The app freezes. The customer waits. The line builds.</p></div>
-      <div class="r-card"><div class="num">02</div><h4 class="h-3">Power goes off.</h4><p>You forget to write the sale down. End of day, the cash does not match the records.</p></div>
-      <div class="r-card"><div class="num">03</div><h4 class="h-3">Cloud apps lock up.</h4><p>You sit and wait for "syncing" while the customer walks out the door.</p></div>
+      <div class="r-card"><div class="num">4–12</div><h4 class="h-3">Sales lost per week.</h4><p>Most Nigerian merchants drop between 4 and 12 transactions every week to network failures.</p></div>
+      <div class="r-card"><div class="num">₦56K–₦168K</div><h4 class="h-3">Revenue gone monthly.</h4><p>At an average ticket of ₦3,500, a single shop loses this much every month to dropped transactions alone.</p></div>
+      <div class="r-card"><div class="num">6 figures</div><h4 class="h-3">Across a small chain.</h4><p>Multiply across two or three branches and the loss reaches six figures within a single week.</p></div>
     </div>
   </div>
 </section>
 
 <section class="section">
   <div class="container">
-    <div class="sec-head"><div><span class="meta-num">How it works</span></div><h2 class="h-2">Four steps. No spinning circles.</h2></div>
+    <div class="sec-head"><div><span class="meta-num">How it works</span></div><h2 class="h-2">Sell first. Sync later.</h2></div>
+    <p style="font-family:var(--font-marketing);font-size:18px;line-height:1.65;color:var(--ink-2);max-width:72ch;margin:0 0 28px;">SyncSalez stores every product, customer, sale, debt, and stock movement on the phone itself. The app reads from the device, writes to the device, and prints from the device. The internet is not a dependency. It is a delivery channel.</p>
+    <p style="font-family:var(--font-marketing);font-size:18px;line-height:1.65;color:var(--ink-2);max-width:72ch;margin:0 0 48px;">When the network returns, the app sends everything to the cloud in the background. No spinning wheel. No frozen screen. No lost transactions. You do not press a button. You do not wait. Work continues without interruption.</p>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
-      <div class="r-card"><div class="num">Step 1</div><h4 class="h-3">Save on phone.</h4><p>Every sale writes to local storage in under one second. Your phone is the source of truth.</p></div>
-      <div class="r-card"><div class="num">Step 2</div><h4 class="h-3">Remember everything.</h4><p>Stock changes, refunds, price edits, customer notes — all queued offline.</p></div>
-      <div class="r-card"><div class="num">Step 3</div><h4 class="h-3">Sync in the background.</h4><p>When signal returns, the app uploads quietly. You don't see it. You don't wait.</p></div>
-      <div class="r-card"><div class="num">Step 4</div><h4 class="h-3">One badge to confirm.</h4><p>"Synced 8 minutes ago." That's it. Nothing more to think about.</p></div>
+      <div class="r-card"><div class="num">01</div><h4 class="h-3">The phone is the source of truth.</h4><p>Every sale, refund, price edit, and stock change writes to local storage in under one second.</p></div>
+      <div class="r-card"><div class="num">02</div><h4 class="h-3">No "syncing" screen.</h4><p>The app reads from the device, writes to the device, prints from the device. Nothing waits for the cloud.</p></div>
+      <div class="r-card"><div class="num">03</div><h4 class="h-3">Background upload.</h4><p>When signal returns, the app sends everything to the cloud quietly. You don't press a button. You don't wait.</p></div>
+      <div class="r-card"><div class="num">04</div><h4 class="h-3">Reconciled, not just synced.</h4><p>The app verifies every record made it to the cloud. If anything fails, it retries until it lands.</p></div>
     </div>
   </div>
 </section>
 
 <section class="section band-paper">
   <div class="container">
-    <div class="sec-head"><div><span class="meta-num">What you get</span></div><h2 class="h-2">A counter that never stops.</h2></div>
-    <div class="callout">"Network goes off in this market every afternoon. I do not lose sales anymore."<br/><span style="font-family:var(--font-marketing);font-size:14px;font-weight:400;color:var(--ink-2);display:block;margin-top:12px;">— Tunde, T-Plus Electronics, Computer Village Lagos</span></div>
+    <div class="sec-head"><div><span class="meta-num">What this means</span></div><h2 class="h-2">What this means for your business.</h2></div>
+    <div class="cards-3">
+      <div class="r-card"><div class="num">01</div><h4 class="h-3">Stop losing sales to network drops.</h4><p>A shop selling ₦100,000 per day recovers ₦5,000 to ₦12,000 in previously lost transactions every week. Over a year, the recovered revenue pays for SyncSalez many times over.</p></div>
+      <div class="r-card"><div class="num">02</div><h4 class="h-3">Expand into low-coverage areas.</h4><p>Open a second branch without buying expensive routers or paying for backup data lines. Staff sell from the phone. Head office sees the data once the device reconnects. Zero new infrastructure.</p></div>
+      <div class="r-card"><div class="num">03</div><h4 class="h-3">Run on the phone you already own.</h4><p>A low-end Tecno or Infinix with 2GB RAM is enough. The app loads in under two seconds. It holds 10,000 products and 100,000 transactions without slowing down.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="sec-head"><div><span class="meta-num">Engineering</span></div><h2 class="h-2">Built for Nigerian conditions.</h2></div>
+    <p style="font-family:var(--font-marketing);font-size:18px;line-height:1.65;color:var(--ink-2);max-width:72ch;margin:0 0 48px;">Other apps claim offline mode. Most of them cache a few screens and crash on the third sale. SyncSalez stores the full business database on the device — and the background sync is engineered for how Tecno and Infinix phones actually behave.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+      <div class="r-card"><div class="num">30+ tables</div><h4 class="h-3">The full database, on the device.</h4><p>Sales, stock counts, customer records, invoices, receipts, debt tracking. All of it works offline. None of it depends on signal. More than 30 tables covering every part of operations.</p></div>
+      <div class="r-card"><div class="num">HiOS · XOS</div><h4 class="h-3">Tuned for Tecno and Infinix.</h4><p>Most offline apps fail because Android kills their sync process to save battery. SyncSalez uses foreground sync workers and reconciliation logic built for the battery quirks of HiOS and XOS — so no record gets stuck on the device.</p></div>
+    </div>
   </div>
 </section>
 
 <section class="section band-blue" style="padding:96px 0;text-align:center;">
   <div class="container">
-    <h2 class="h-1" style="color:#fff;margin-bottom:24px;">Stop losing sales to bad signal.</h2>
-    <a class="btn btn--invert" href="#waitlist" data-action="waitlist">Get started <span class="arr"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 9 L9 3 M5 3 H9 V7"/></svg></span></a>
+    <h2 class="h-1" style="color:#fff;margin-bottom:18px;">Stop losing money to a bad network.</h2>
+    <p class="lead" style="color:rgba(255,255,255,0.88);max-width:62ch;margin:0 auto 32px;">The internet is unreliable in Nigeria. Your business should not be. SyncSalez records every sale, tracks every kobo, and protects every transaction — whether you have full bars, one bar, or no bars at all.</p>
+    <a class="btn btn--invert" href="#waitlist" data-action="waitlist">Join the waitlist <span class="arr"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 9 L9 3 M5 3 H9 V7"/></svg></span></a>
   </div>
 </section>
 
@@ -151,6 +173,6 @@
   <div class="footer__bottom"><div>© 2026 SyncSalez Inc.</div><div><a href="index.html" style="color:rgba(252,252,252,0.7);">← Back to home</a></div></div>
 </div></footer>
 
-<script src="assets/site.js?v=10"></script>
+<script src="assets/site.js?v=29"></script>
 </body>
 </html>
