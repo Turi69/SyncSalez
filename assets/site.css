@@ -122,6 +122,80 @@ button { font: inherit; cursor: pointer; }
 .band-blue { background: var(--mirror-blue-500); color: #fff; }
 
 /* ============================================================
+   FINAL CTA — text on the left, photo flush against the bottom-
+   right corner of the blue frame at the SAME visual ratio across
+   every viewport.
+
+   Image positions to the SECTION (`.final-cta`), not the container
+   — the container has gutters/max-width that would leave a gap on
+   the right. The section is full-bleed, so right: 0 + bottom: 0
+   pin the image to the actual blue frame corners. Width is in vw
+   so the visual ratio stays identical at every breakpoint.
+   ============================================================ */
+.final-cta {
+  overflow: hidden;
+  /* .section already provides position: relative — the image
+     resolves its absolute coordinates against this section. */
+}
+.final-cta__inner {
+  /* Intentionally NOT position: relative. We want the image inside
+     this DOM node to position against the section, not the .container. */
+}
+.final-cta__text {
+  position: relative;
+  z-index: 2;
+  max-width: 52%;
+}
+.final-cta__image {
+  position: absolute;
+  right:  0;             /* flush against the section's right edge */
+  bottom: 0;             /* flush against the section's bottom edge */
+  width:  56vw;          /* fixed visual ratio — same at every viewport size */
+  height: auto;
+  display: block;
+  object-fit: contain;
+  object-position: bottom right;
+  pointer-events: none;
+  user-select: none;
+  z-index: 1;            /* below the text — overlap is fine, text wins */
+}
+
+/* Cap the image at very large viewports so it doesn't blow up
+   beyond a sensible maximum. Still pinned bottom-right. */
+@media (min-width: 1600px) {
+  .final-cta__image { width: 896px; }
+}
+
+/* Mid-size devices (tablet / small laptop) — bump the image up so
+   it doesn't feel underweight against the headline. Text column
+   tightens to compensate; overlap is fine, text wins z-index. */
+@media (max-width: 1100px) {
+  .final-cta__image { width: 64vw; }
+  .final-cta__text  { max-width: 50%; }
+}
+
+/* Tablet portrait — push it a bit further. */
+@media (max-width: 900px) {
+  .final-cta__image { width: 70vw; }
+  .final-cta__text  { max-width: 50%; }
+}
+
+/* Mobile — image still anchored bottom-right, text gets more room
+   so headlines breathe. */
+@media (max-width: 720px) {
+  .final-cta__image { width: 66vw; }
+  .final-cta__text  { max-width: 54%; }
+}
+
+/* Small phones — image is hidden entirely. At this size the photo
+   competes too aggressively with the headline; text gets the full
+   width and the section reads as a clean blue panel. */
+@media (max-width: 480px) {
+  .final-cta__image { display: none; }
+  .final-cta__text  { max-width: 100%; }
+}
+
+/* ============================================================
    TYPOGRAPHY (editorial, grey.co register)
    ============================================================ */
 .eyebrow {
@@ -538,9 +612,9 @@ body.menu-open .nav-overlay {
     radial-gradient(60% 50% at 50% 50%, rgba(15,23,42,0) 0%, rgba(15,23,42,0.45) 100%);
 }
 .hero__content {
-  position: relative;
+  position: absolute;
+  inset: 0;
   z-index: 2;
-  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -602,13 +676,11 @@ body.menu-open .nav-overlay {
 .btn-pill--light {
   background: #FFFFFF;
   color: var(--ink);
-  box-shadow: 0 6px 16px -4px rgba(15,23,42,0.20);
 }
 .btn-pill--light:hover {
   background: var(--mirror-blue-500);
   color: #FFFFFF;
   transform: translateY(-1px);
-  box-shadow: 0 10px 24px -6px rgba(36,99,235,0.45);
 }
 .btn-pill--dark {
   background: rgba(15,23,42,0.55);
@@ -798,8 +870,6 @@ body.menu-open .nav-overlay {
   overflow: hidden;
   position: relative;
   padding: 28px 0;
-  border-top: 1px solid var(--rule);
-  border-bottom: 1px solid var(--rule);
   background: var(--paper);
   mask-image: linear-gradient(90deg, transparent 0, #000 80px, #000 calc(100% - 80px), transparent 100%);
   -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 80px, #000 calc(100% - 80px), transparent 100%);
@@ -857,7 +927,7 @@ body.menu-open .nav-overlay {
 }
 .t-card .quote .hl { background: linear-gradient(180deg, transparent 60%, rgba(36,99,235,0.18) 60%); padding: 0 2px; }
 .t-card .person { display: flex; align-items: center; gap: 12px; margin-top: auto; }
-.t-card .avatar { width: 44px; height: 44px; border-radius: 99px; background: linear-gradient(135deg, var(--mirror-blue-500), var(--dark-sea-green-500)); color: #fff; font-family: var(--font-action); font-weight: 700; font-size: 16px; display: flex; align-items: center; justify-content: center; }
+.t-card .avatar { width: 44px; height: 44px; border-radius: 99px; background: var(--mirror-blue-500); color: #fff; font-family: var(--font-action); font-weight: 700; font-size: 16px; display: flex; align-items: center; justify-content: center; }
 .t-card .who { font-family: var(--font-marketing); font-weight: 600; font-size: 14px; color: var(--ink); line-height: 1.3; }
 .t-card .where { font-family: var(--font-marketing); font-size: 13px; color: var(--ink-2); margin-top: 2px; }
 
@@ -984,8 +1054,9 @@ body.menu-open .nav-overlay {
   padding: 96px 0 32px;
 }
 .footer__top {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
   gap: 32px;
   padding-bottom: 80px;
   border-bottom: 1px solid rgba(252,252,252,0.12);
@@ -1029,7 +1100,7 @@ body.menu-open .nav-overlay {
 .footer__socials a:hover { background: rgba(252,252,252,0.14); color: var(--off-white); }
 .footer__locale { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; border: 1px solid rgba(252,252,252,0.16); }
 
-@media (max-width: 1000px) { .footer__top { grid-template-columns: 1fr 1fr; gap: 40px 32px; } }
+@media (max-width: 1000px) { .footer__top { flex-direction: column; gap: 40px; } }
 
 /* ============================================================
    STICKY MOBILE CTA
@@ -1043,7 +1114,20 @@ body.menu-open .nav-overlay {
   border-radius: 999px;
   font-family: var(--font-action); font-weight: 600; font-size: 14px;
   align-items: center; justify-content: space-between;
-  box-shadow: 0 12px 32px -8px rgba(15,23,42,0.5);
+  transition: background-color .25s ease, color .25s ease;
+}
+/* Contextual states — toggled by stickyCtaCtl() in site.js based on
+   which band the CTA is sitting in front of.
+   • on-dark : slate-900 surfaces → flip to brand blue
+   • on-blue : mirror-blue surfaces → flip to white pill with ink text
+   The default slate-900 pill stays untouched on light canvas sections. */
+.sticky-cta.sticky-cta--on-dark {
+  background: var(--mirror-blue-500);
+  color: #FFFFFF;
+}
+.sticky-cta.sticky-cta--on-blue {
+  background: #FFFFFF;
+  color: var(--ink);
 }
 @media (max-width: 720px) { .sticky-cta { display: flex; } }
 
@@ -1084,6 +1168,607 @@ body.menu-open .nav-overlay {
   font-family: var(--font-display); font-weight: 500;
   font-size: 22px; line-height: 1.3; letter-spacing: -0.02em;
   color: var(--ink);
+}
+
+/* ============================================================
+   QUIZ — Is SyncSalez right for your shop?
+   States are switched by `data-state` on `.quiz`:
+     intro  → show .quiz__view--intro
+     active → show .quiz__view--active
+     result → show .quiz__view--result
+   ============================================================ */
+.quiz {
+  background: var(--mirror-blue-500);
+  color: #fff;
+  border-radius: 24px;
+  padding: clamp(32px, 5vw, 64px) clamp(24px, 4vw, 48px);
+  position: relative;
+  overflow: hidden;
+}
+.quiz__view { display: none; }
+.quiz[data-state="intro"]  .quiz__view--intro,
+.quiz[data-state="active"] .quiz__view--active,
+.quiz[data-state="result"] .quiz__view--result { display: block; }
+
+/* ---- Intro ---- */
+.quiz__view--intro {
+  display: none;
+}
+.quiz[data-state="intro"] .quiz__view--intro {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+.quiz__meta { color: rgba(255,255,255,0.7); }
+.quiz__dot {
+  background: #fff; width: 6px; height: 6px;
+  border-radius: 99px; margin-right: 8px; display: inline-block;
+}
+.quiz__title { color: #fff; margin-bottom: 20px; }
+.quiz__lead {
+  color: rgba(255,255,255,0.85);
+  max-width: 42ch;
+  margin-bottom: 32px;
+}
+.quiz__preview {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 18px;
+  padding: 28px;
+  border: 1px solid rgba(255,255,255,0.16);
+}
+.quiz__preview-meta {
+  font-family: var(--font-action);
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 12px;
+}
+.quiz__preview-q {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+  line-height: 1.2;
+}
+.quiz__preview-options { display: flex; flex-direction: column; gap: 8px; }
+.quiz__preview-options > div {
+  background: rgba(255,255,255,0.10);
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-family: var(--font-action);
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.quiz__preview-more {
+  background: transparent !important;
+  font-size: 12px !important;
+  color: rgba(255,255,255,0.55);
+  padding: 4px 16px !important;
+}
+
+/* ---- Active question ---- */
+.quiz__view--active { max-width: 720px; margin: 0 auto; }
+.quiz__progress { margin-bottom: 28px; }
+.quiz__progress-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.quiz__progress-label {
+  font-family: var(--font-action);
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.7);
+}
+.quiz__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 0;
+  color: rgba(255,255,255,0.7);
+  font-family: var(--font-action);
+  font-weight: 600;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 6px;
+  transition: color .15s ease, background-color .15s ease;
+}
+.quiz__back:hover { color: #fff; background: rgba(255,255,255,0.10); }
+.quiz__back:disabled { opacity: 0.3; cursor: not-allowed; }
+.quiz__progress-bar {
+  height: 4px;
+  background: rgba(255,255,255,0.16);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.quiz__progress-fill {
+  height: 100%;
+  background: #fff;
+  border-radius: 99px;
+  width: 16.66%; /* 1/6 = q1 */
+  transition: width .35s cubic-bezier(.4,0,.2,1);
+}
+
+.quiz__q-title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(24px, 3vw, 34px);
+  letter-spacing: -0.024em;
+  line-height: 1.2;
+  color: #fff;
+  margin: 0 0 24px;
+}
+
+.quiz__options { display: flex; flex-direction: column; gap: 10px; }
+.quiz__option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255,255,255,0.10);
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  font-family: var(--font-action);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: -0.005em;
+  color: #fff;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color .15s ease, border-color .15s ease, transform .12s ease;
+}
+.quiz__option:hover {
+  background: rgba(255,255,255,0.18);
+  border-color: rgba(255,255,255,0.28);
+}
+.quiz__option:active { transform: scale(.99); }
+.quiz__option.is-picked {
+  background: #fff;
+  color: var(--mirror-blue-700);
+  border-color: #fff;
+}
+.quiz__option-arr { opacity: 0.55; transition: transform .2s ease, opacity .15s ease; }
+.quiz__option:hover .quiz__option-arr { opacity: 1; transform: translateX(2px); }
+.quiz__option.is-picked .quiz__option-arr { opacity: 1; }
+
+/* ---- Result ---- */
+.quiz__view--result { display: none; }
+.quiz[data-state="result"] .quiz__view--result {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 48px;
+  align-items: stretch;
+}
+
+.quiz__result-meta {
+  font-family: var(--font-action);
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.quiz__result-meta::before {
+  content: "";
+  width: 6px; height: 6px;
+  border-radius: 99px;
+  background: #fff;
+}
+.quiz__result-title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(28px, 3.6vw, 44px);
+  line-height: 1.08;
+  letter-spacing: -0.026em;
+  color: #fff;
+  margin: 0 0 20px;
+}
+.quiz__result-body {
+  font-family: var(--font-marketing);
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.86);
+  max-width: 50ch;
+  margin: 0 0 28px;
+}
+.quiz__result-features {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+.quiz__result-feature {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 12px;
+  padding: 14px 14px;
+  font-family: var(--font-action);
+  font-weight: 600;
+  font-size: 13px;
+  color: #fff;
+  line-height: 1.3;
+  letter-spacing: -0.005em;
+}
+.quiz__result-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.quiz__retake {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 0;
+  color: rgba(255,255,255,0.75);
+  font-family: var(--font-action);
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 14px 4px;
+  margin-top: 4px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: color .15s ease;
+}
+.quiz__retake:hover { color: #fff; }
+
+.quiz__plan-card {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.14);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 18px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-self: start;
+}
+.quiz__plan-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  background: #fff;
+  color: var(--mirror-blue-700);
+  border-radius: 9999px;
+  font-family: var(--font-action);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  align-self: flex-start;
+}
+.quiz__plan-name {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 26px;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: #fff;
+}
+.quiz__plan-price {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 36px;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  color: #fff;
+}
+.quiz__plan-price small {
+  font-family: var(--font-marketing);
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.7);
+  margin-left: 6px;
+}
+.quiz__plan-note {
+  font-family: var(--font-marketing);
+  font-size: 13px;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.5;
+  margin: 0;
+}
+.quiz__plan-image {
+  width: 100%;
+  aspect-ratio: 5 / 3;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(15,23,42,0.20);
+  margin-top: 4px;
+}
+.quiz__plan-image img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+}
+
+/* ============================================================
+   QUIZ — RESULT MEDIA (replaces .quiz__plan-card; no pricing).
+   Used for Results 2/3/4 where a vertical persona image anchors
+   the recommendation visually next to the body copy + CTA.
+   ============================================================ */
+.quiz__media {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-self: stretch;
+}
+.quiz__media-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  border-radius: 18px;
+  overflow: hidden;
+  background: rgba(15,23,42,0.20);
+  border: 1px solid rgba(255,255,255,0.14);
+  box-shadow: 0 24px 48px -24px rgba(15,23,42,0.45);
+}
+.quiz__media-frame img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.quiz__media-caption {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 4px;
+}
+.quiz__media-meta {
+  font-family: var(--font-action);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.78);
+}
+.quiz__media-line {
+  font-family: var(--font-marketing);
+  font-size: 13px;
+  line-height: 1.45;
+  color: rgba(255,255,255,0.72);
+}
+
+/* ============================================================
+   QUIZ — ANIMATED GAUGE (replaces the persona image).
+   A 270° dial whose fill amount and colour are driven by the
+   visitor's quiz score. The gradient is selected per tier
+   (.gauge--service / --light / --standard / --growth / --priority)
+   and the fill peak is set per-instance via --gauge-target.
+   ============================================================ */
+@property --gauge-target {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 28;
+}
+.quiz__media-frame--gauge {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  border-radius: 0;
+  /* Override the base .quiz__media-frame's portrait aspect-ratio so
+     the frame collapses to the SVG's natural size (no empty padding). */
+  aspect-ratio: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  overflow: visible;
+}
+.gauge {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+  --gauge-target: 28;
+}
+/* Ticks adopt the quiz panel's background colour so they punch clean
+   gaps through the colored band without leaving visible slivers. */
+.gauge__ticks { stroke: var(--mirror-blue-500); }
+.gauge__fill {
+  animation: quiz-gauge-fill 2.2s cubic-bezier(0.22, 1, 0.36, 1) 1 both;
+}
+.gauge__head {
+  opacity: 0;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.9));
+  animation: quiz-gauge-head 2.2s cubic-bezier(0.22, 1, 0.36, 1) 1 both;
+}
+
+/* Tier-specific glow on the fill — matches the gradient temperature
+   so the warm/hot tiers radiate and the cool tiers stay restrained. */
+.gauge--service  .gauge__fill { filter: drop-shadow(0 0  9px rgba( 70, 120, 230, 0.45)); }
+.gauge--light    .gauge__fill { filter: drop-shadow(0 0  9px rgba(255, 200, 160, 0.40)); }
+.gauge--standard .gauge__fill { filter: drop-shadow(0 0 10px rgba(255, 130,  50, 0.50)); }
+.gauge--growth   .gauge__fill { filter: drop-shadow(0 0 12px rgba(255, 100,  30, 0.55)); }
+.gauge--priority .gauge__fill { filter: drop-shadow(0 0 14px rgba(255,  40,  40, 0.60)); }
+
+@keyframes quiz-gauge-fill {
+  0%   { stroke-dashoffset: 100; }
+  10%  { stroke-dashoffset: 100; }
+  100% { stroke-dashoffset: var(--gauge-target); }
+}
+@keyframes quiz-gauge-head {
+  0%   { stroke-dashoffset: 100; opacity: 0; }
+  10%  { stroke-dashoffset: 100; opacity: 0; }
+  22%  { opacity: 1; }
+  100% { stroke-dashoffset: var(--gauge-target); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gauge__fill {
+    animation: none;
+    stroke-dashoffset: var(--gauge-target);
+  }
+  .gauge__head {
+    animation: none;
+    stroke-dashoffset: var(--gauge-target);
+    opacity: 1;
+  }
+}
+
+/* Single-column result layout when there is no media aside
+   (Results 1 = service lead, 5 = light fit). */
+.quiz.quiz--no-aside .quiz__view--result {
+  grid-template-columns: 1fr;
+  max-width: 720px;
+}
+
+/* Secondary CTA on Result 2 — translucent ghost button on blue */
+.quiz__cta-secondary {
+  background: rgba(255,255,255,0.10);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.22);
+}
+.quiz__cta-secondary:hover {
+  background: rgba(255,255,255,0.16);
+}
+
+/* Responsive collapse for the quiz */
+@media (max-width: 800px) {
+  .quiz[data-state="intro"] .quiz__view--intro,
+  .quiz[data-state="result"] .quiz__view--result {
+    grid-template-columns: 1fr !important;
+    gap: 32px;
+  }
+  .quiz__result-features { grid-template-columns: 1fr; }
+  .quiz__media { order: -1; }
+  .quiz__media-frame { aspect-ratio: 5 / 4; }
+}
+@media (max-width: 520px) {
+  .quiz { padding: 28px 22px; border-radius: 18px; }
+  .quiz__q-title { font-size: 22px; }
+  .quiz__option { padding: 12px 14px; font-size: 14px; }
+}
+
+/* ============================================================
+   WAITLIST MODAL — capture-mode field hiding.
+   The trigger that opens the modal can switch capture mode via
+   data-quiz-capture; the modal hides irrelevant fields.
+   ============================================================ */
+.waitlist[data-capture="email"] [data-field="phone"],
+.waitlist[data-capture="email"] [data-field="location"],
+.waitlist[data-capture="email"] [data-field="category"],
+.waitlist[data-capture="phone"] [data-field="location"],
+.waitlist[data-capture="phone"] [data-field="category"] { display: none; }
+
+/* ============================================================
+   PERSONA FIGURE — full-bleed edge-to-edge photo, fixed 70vh tall
+   ============================================================ */
+.persona-figure {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: block;
+}
+.persona-figure img {
+  width: 100%;
+  height: 70vh;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* ============================================================
+   PAGE LOADER — vertical feature dial
+   Pure CSS animation chain:
+     0.0s → 3.2s   spin track up through features with symmetric ease-
+                   in-out cubic so the scroll feels smooth and
+                   deliberate, decelerating gently into "SyncSalez".
+     3.2s → 3.7s   hold on SyncSalez (500ms).
+     3.7s → 4.7s   viewport scales up + fades over 1s while the white
+                   bg fades, revealing the page beneath.
+   JS removes the element from the DOM at ~4.8s.
+   ============================================================ */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(34px, 8vw, 84px);
+  line-height: 1.2;
+  letter-spacing: -0.030em;
+  color: var(--ink);
+  /* fade the white bg on exit */
+  animation: loader-fade 1000ms cubic-bezier(.22, 1, .36, 1) 3700ms forwards;
+}
+
+.loader__viewport {
+  height: 1.2em;
+  overflow: hidden;
+  /* Slot-machine feathered edges — fades items as they enter/exit */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 28%, black 72%, transparent 100%);
+          mask-image: linear-gradient(to bottom, transparent 0%, black 28%, black 72%, transparent 100%);
+  /* zoom the lettering out on exit */
+  animation: loader-zoom 1000ms cubic-bezier(.22, 1, .36, 1) 3700ms forwards;
+  transform-origin: 50% 50%;
+}
+
+.loader__track {
+  display: flex;
+  flex-direction: column;
+  /* end position = (N-1) × 1.2em where N is the number of items.
+     Currently 11 items (10 features + brand) → SyncSalez lands at -12em.
+     Symmetric ease-in-out cubic — gentle start, gentle landing,
+     no super-fast middle. */
+  animation: loader-spin 3.2s cubic-bezier(.65, 0, .35, 1) forwards;
+}
+
+.loader__item {
+  height: 1.2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  padding: 0 12px;
+}
+
+@keyframes loader-spin {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-12em); }
+}
+@keyframes loader-fade {
+  from { opacity: 1; visibility: visible; }
+  to   { opacity: 0; visibility: hidden; }
+}
+@keyframes loader-zoom {
+  from { transform: scale(1);    opacity: 1; }
+  to   { transform: scale(2.4);  opacity: 0; }
+}
+
+body.loader-active { overflow: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  .loader__track {
+    animation: none;
+    transform: translateY(-12em);  /* land directly on SyncSalez */
+  }
+  .loader        { animation: loader-fade 250ms ease 800ms forwards; }
+  .loader__viewport {
+    animation: loader-fade 250ms ease 800ms forwards;
+    transform: none;
+  }
 }
 
 /* ============================================================
@@ -1258,8 +1943,7 @@ body.waitlist-open { overflow: hidden; }
   font-size: 15px;
   letter-spacing: -0.005em;
   cursor: pointer;
-  transition: background-color .15s ease, transform .15s ease, box-shadow .15s ease;
-  box-shadow: 0 6px 16px -4px rgba(36,99,235,0.40);
+  transition: background-color .15s ease, transform .15s ease;
 }
 .waitlist__submit:hover { background: var(--mirror-blue-600); transform: translateY(-1px); }
 .waitlist__submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
@@ -1439,7 +2123,7 @@ html, body { overflow-x: hidden; max-width: 100%; }
 
 /* Footer — go from 5-col → 2-col @ 1000 (already) → 1-col @ 480 */
 @media (max-width: 480px) {
-  .footer__top { grid-template-columns: 1fr !important; gap: 32px; }
+  .footer__top { flex-direction: column !important; gap: 32px; }
   .footer__bottom { flex-direction: column; gap: 12px; align-items: flex-start; }
 }
 
@@ -1549,6 +2233,336 @@ html, body { overflow-x: hidden; max-width: 100%; }
   .phone__screen { font-size: 13px; }
 }
 
+/* ============================================================
+   QUIZ MODAL — overlay + panel that holds the quiz card.
+   The quiz no longer lives inline. It opens via [data-action="quiz"]
+   which sets aria-hidden="false" on #quiz-modal.
+   ============================================================ */
+.quiz-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: clamp(16px, 4vw, 64px) clamp(12px, 3vw, 32px);
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .22s ease, visibility 0s linear .22s;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.quiz-modal[aria-hidden="false"] {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity .22s ease, visibility 0s linear 0s;
+}
+.quiz-modal__backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 20, 47, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  cursor: pointer;
+}
+.quiz-modal__panel {
+  position: relative;
+  width: min(1100px, 100%);
+  margin: auto;
+  border-radius: 24px;
+  background: transparent;
+  transform: translateY(12px) scale(0.985);
+  transition: transform .28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.quiz-modal[aria-hidden="false"] .quiz-modal__panel {
+  transform: translateY(0) scale(1);
+}
+.quiz-modal__close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 5;
+  width: 36px;
+  height: 36px;
+  border-radius: 99px;
+  border: 1px solid var(--rule);
+  background: #fff;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color .15s ease, color .15s ease, transform .12s ease;
+}
+.quiz-modal__close:hover {
+  background: var(--ink);
+  color: #fff;
+  transform: rotate(90deg);
+}
+body.quiz-modal-open {
+  overflow: hidden;
+}
+
+/* ============================================================
+   QUIZ — LIGHT THEME OVERRIDE
+   Re-themes the quiz card for a primary white modal surface.
+   Activated by adding `quiz--light` alongside `.quiz`.
+   ============================================================ */
+.quiz.quiz--light {
+  background: var(--canvas);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  box-shadow: 0 32px 64px -28px rgba(15, 23, 42, 0.30);
+}
+.quiz--light .quiz__meta { color: var(--ink-2); }
+.quiz--light .quiz__dot { background: var(--mirror-blue-500); }
+.quiz--light .quiz__title { color: var(--ink); }
+.quiz--light .quiz__lead { color: var(--ink-2); }
+
+/* Intro preview card — soften to slate-50 surface */
+.quiz--light .quiz__preview {
+  background: var(--slate-50);
+  border: 1px solid var(--rule);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.quiz--light .quiz__preview-meta { color: var(--ink-3); }
+.quiz--light .quiz__preview-q { color: var(--ink); }
+.quiz--light .quiz__preview-options > div {
+  background: #fff;
+  border: 1px solid var(--rule-soft);
+  color: var(--ink);
+}
+.quiz--light .quiz__preview-more { color: var(--ink-3); }
+
+/* Active question — progress + back button + question copy */
+.quiz--light .quiz__progress-label { color: var(--ink-3); }
+.quiz--light .quiz__back { color: var(--ink-2); }
+.quiz--light .quiz__back:hover { color: var(--ink); background: var(--slate-50); }
+.quiz--light .quiz__progress-bar { background: var(--slate-100); }
+.quiz--light .quiz__progress-fill { background: var(--mirror-blue-500); }
+.quiz--light .quiz__q-title { color: var(--ink); }
+
+/* Options — light cards with slate borders */
+.quiz--light .quiz__option {
+  background: #fff;
+  border: 1px solid var(--rule);
+  color: var(--ink);
+}
+.quiz--light .quiz__option:hover {
+  background: var(--mirror-blue-50);
+  border-color: var(--mirror-blue-500);
+}
+.quiz--light .quiz__option.is-picked {
+  background: var(--mirror-blue-500);
+  color: #fff;
+  border-color: var(--mirror-blue-500);
+}
+
+/* Result — meta, copy, plan card, retake */
+.quiz--light .quiz__result-meta { color: var(--ink-3); }
+.quiz--light .quiz__result-meta::before { background: var(--mirror-blue-500); }
+.quiz--light .quiz__result-title { color: var(--ink); }
+.quiz--light .quiz__result-body { color: var(--ink-2); }
+.quiz--light .quiz__result-feature {
+  background: var(--slate-50);
+  border: 1px solid var(--rule);
+  color: var(--ink);
+}
+.quiz--light .quiz__retake { color: var(--ink-2); }
+.quiz--light .quiz__retake:hover { color: var(--ink); }
+
+.quiz--light .quiz__plan-card {
+  background: var(--slate-50);
+  border: 1px solid var(--rule);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.quiz--light .quiz__plan-name,
+.quiz--light .quiz__plan-price { color: var(--ink); }
+.quiz--light .quiz__plan-price small,
+.quiz--light .quiz__plan-note { color: var(--ink-2); }
+.quiz--light .quiz__plan-tag {
+  background: var(--mirror-blue-500);
+  color: #fff;
+}
+
+/* Media frame — keep as a slate placeholder */
+.quiz--light .quiz__media-frame {
+  background: var(--slate-50);
+  border: 1px solid var(--rule);
+  box-shadow: 0 16px 32px -20px rgba(15, 23, 42, 0.20);
+}
+/* Gauge frame in the light theme is bare — no container card, border,
+   or shadow. The dial sits directly on the modal's white surface. */
+.quiz--light .quiz__media-frame--gauge {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+}
+.quiz--light .quiz__media-meta { color: var(--ink-2); }
+.quiz--light .quiz__media-line { color: var(--ink-3); }
+
+/* Gauge ticks — soft muted stroke. Sits on top of the colored band
+   as quiet dividers rather than punching all the way through. */
+.quiz--light .gauge__ticks { stroke: var(--rule); }
+
+/* Centered label inside the dial. Position is calibrated to the dial's
+   geometric centre — the arc is drawn around viewBox (110, 110), which
+   maps to 50% across and ~56% down of the gauge frame. */
+.quiz__media-frame--gauge { position: relative; }
+.gauge__label {
+  position: absolute;
+  left: 50%;
+  top: 56%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(18px, 2.6vw, 30px);
+  line-height: 1.12;
+  letter-spacing: -0.024em;
+  color: var(--ink);
+  width: 64%;
+  max-width: 220px;
+  pointer-events: none;
+  -webkit-font-smoothing: antialiased;
+}
+.quiz--light .gauge__head { filter: none; }
+/* Glow tints follow the same cool-to-emerald palette — restrained on
+   the unsuitable end, fuller on the priority match. */
+.quiz--light .gauge--service  .gauge__fill { filter: drop-shadow(0 0  6px rgba( 74, 111, 165, 0.28)); }
+.quiz--light .gauge--light    .gauge__fill { filter: drop-shadow(0 0  6px rgba( 91, 155, 213, 0.32)); }
+.quiz--light .gauge--standard .gauge__fill { filter: drop-shadow(0 0  7px rgba( 60, 180, 160, 0.38)); }
+.quiz--light .gauge--growth   .gauge__fill { filter: drop-shadow(0 0  8px rgba( 76, 175,  80, 0.45)); }
+.quiz--light .gauge--priority .gauge__fill { filter: drop-shadow(0 0 10px rgba( 27, 122,  62, 0.50)); }
+
+/* Result CTA — primary white surface needs a filled mirror-blue button
+   for the main waitlist CTA, and a slate ghost for the secondary. */
+.quiz--light .quiz__cta-secondary {
+  background: var(--slate-50);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+}
+.quiz--light .quiz__cta-secondary:hover {
+  background: var(--slate-100);
+  border-color: var(--slate-300);
+}
+
+/* Active intro CTA — invert was white-on-blue; flip to filled blue */
+.quiz--light .quiz__view--intro .btn--invert {
+  background: var(--mirror-blue-500);
+  color: #fff;
+}
+.quiz--light .quiz__view--intro .btn--invert:hover {
+  background: var(--mirror-blue-600);
+}
+.quiz--light .quiz__view--result .btn--invert {
+  background: var(--mirror-blue-500);
+  color: #fff;
+}
+.quiz--light .quiz__view--result .btn--invert:hover {
+  background: var(--mirror-blue-600);
+}
+
+/* ============================================================
+   QUIZ MODAL — RESPONSIVE
+   Three breakpoints: tablet (≤900), mobile (≤720), small (≤480).
+   The modal scales typography, padding, and the gauge proportionally
+   and lets long CTA text wrap so nothing clips on narrow screens.
+   ============================================================ */
+
+/* Tablet — pull the panel slightly tighter, drop result/intro to one
+   column once 1.1fr/0.9fr starts crowding. */
+@media (max-width: 900px) {
+  .quiz-modal { padding: clamp(12px, 2.5vw, 32px); }
+  .quiz-modal__panel { width: 100%; }
+}
+
+/* Mobile — modal goes full-bleed; reset chrome, allow scrolling. */
+@media (max-width: 720px) {
+  .quiz-modal {
+    padding: 0;
+    align-items: stretch;
+  }
+  .quiz-modal__backdrop { backdrop-filter: blur(2px); }
+  .quiz-modal__panel {
+    width: 100%;
+    border-radius: 0;
+    min-height: 100dvh;
+    margin: 0;
+  }
+  .quiz.quiz--light {
+    border-radius: 0;
+    border: 0;
+    box-shadow: none;
+    min-height: 100dvh;
+    padding: 64px 20px 32px;
+  }
+  .quiz-modal__close {
+    top: 14px;
+    right: 14px;
+    width: 40px;
+    height: 40px;
+  }
+
+  /* Stacked layouts */
+  .quiz[data-state="intro"] .quiz__view--intro,
+  .quiz[data-state="result"] .quiz__view--result {
+    grid-template-columns: 1fr !important;
+    gap: 28px;
+  }
+  .quiz__result-features { grid-template-columns: 1fr; gap: 8px; }
+
+  /* Long quiz/result button text must wrap, not clip */
+  .quiz__result-actions { flex-direction: column; align-items: stretch; }
+  .quiz__result-actions .btn {
+    white-space: normal;
+    text-align: center;
+    line-height: 1.25;
+    width: 100%;
+    justify-content: center;
+  }
+  .quiz__result-actions .btn .arr { flex-shrink: 0; }
+
+  /* Gauge — cap size + put it above the result text */
+  .quiz__media { order: -1; }
+  .quiz__media-frame--gauge {
+    max-width: 320px;
+    margin: 0 auto;
+  }
+  .gauge__label {
+    font-size: clamp(16px, 5.4vw, 24px);
+    width: 60%;
+  }
+
+  /* Tighten result typography so it fits comfortably */
+  .quiz__result-title { font-size: clamp(24px, 6.5vw, 32px); }
+  .quiz__result-body  { font-size: 15px; max-width: none; }
+  .quiz__q-title      { font-size: clamp(22px, 5.6vw, 28px); }
+
+  /* Intro preview card slimmer on mobile */
+  .quiz__preview { padding: 22px; }
+  .quiz__preview-q { font-size: 18px; }
+}
+
+/* Small phones — final tightening */
+@media (max-width: 480px) {
+  .quiz.quiz--light { padding: 56px 16px 28px; }
+  .quiz__result-title { font-size: 24px; }
+  .quiz__result-body  { font-size: 14.5px; }
+  .quiz__option { padding: 12px 14px; font-size: 14px; }
+  .quiz__media-frame--gauge { max-width: 280px; }
+  .gauge__label { font-size: 18px; }
+  .quiz-modal__close {
+    top: 10px;
+    right: 10px;
+  }
+}
+
 /* Reduced motion — respect user preference globally */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -1559,4 +2573,6 @@ html, body { overflow-x: hidden; max-width: 100%; }
   }
   .marquee__track { animation: none !important; }
   .dot-pulse::after { animation: none !important; }
+  .quiz-modal { transition: none; }
+  .quiz-modal__panel { transition: none; }
 }

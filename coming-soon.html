@@ -5,9 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Coming soon — SyncSalez</title>
   <meta name="description" content="This SyncSalez page is being prepared. Check back soon." />
-  <link rel="stylesheet" href="assets/site.css?v=10" />
+  <link rel="stylesheet" href="assets/site.css?v=17" />
 </head>
 <body>
+<!-- ============================================================
+     PAGE LOADER — vertical feature dial
+     Renders before any other content so the first paint is the loader.
+     ============================================================ -->
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="loader__viewport">
+    <div class="loader__track">
+      <span class="loader__item">Offline sales</span>
+      <span class="loader__item">Theft prevention</span>
+      <span class="loader__item">Stock control</span>
+      <span class="loader__item">Profit dashboard</span>
+      <span class="loader__item">Customer records</span>
+      <span class="loader__item">Multi-branch</span>
+      <span class="loader__item">Online store</span>
+      <span class="loader__item">Barcode lookup</span>
+      <span class="loader__item">Cross-branch transfers</span>
+      <span class="loader__item">Payments</span>
+      <span class="loader__item loader__item--brand">SyncSalez</span>
+    </div>
+  </div>
+</div>
+
 
 <nav class="nav" aria-label="Primary">
   <div class="nav__inner">
@@ -147,7 +169,7 @@
   </div>
 </footer>
 
-<script src="assets/site.js?v=6"></script>
+<script src="assets/site.js?v=10"></script>
 <script>
   (function () {
     const params = new URLSearchParams(location.search);

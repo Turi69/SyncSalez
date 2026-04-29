@@ -5,10 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SyncSalez — Solving your shop problems, one feature at a time.</title>
   <meta name="description" content="Run your physical shop on any Android phone. Sell offline. Catch theft. See your profit in real time. Free to start." />
-  <link rel="stylesheet" href="assets/site.css?v=10" />
+  <link rel="stylesheet" href="assets/site.css?v=40" />
   <link rel="stylesheet" href="assets/animations.css?v=3" />
 </head>
 <body>
+
+<!-- ============================================================
+     PAGE LOADER — vertical feature dial
+     Renders before any other content so the first paint is the loader.
+     ============================================================ -->
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="loader__viewport">
+    <div class="loader__track">
+      <span class="loader__item">Offline sales</span>
+      <span class="loader__item">Theft prevention</span>
+      <span class="loader__item">Stock control</span>
+      <span class="loader__item">Profit dashboard</span>
+      <span class="loader__item">Customer records</span>
+      <span class="loader__item">Multi-branch</span>
+      <span class="loader__item">Online store</span>
+      <span class="loader__item">Barcode lookup</span>
+      <span class="loader__item">Cross-branch transfers</span>
+      <span class="loader__item">Payments</span>
+      <span class="loader__item loader__item--brand">SyncSalez</span>
+    </div>
+  </div>
+</div>
 
 <!-- ============================================================
      NAV
@@ -33,7 +55,7 @@
           <a href="coming-soon.html?page=Payments">Payments</a>
         </div>
       </div>
-      <a class="nav__item" href="pricing.html">Pricing</a>
+      <a class="nav__item" href="pricing.html" style="display:none">Pricing</a>
       <div class="nav__item has-dropdown">
         For your business <svg class="chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 4.5l3 3 3-3"/></svg>
         <div class="dropdown">
@@ -45,7 +67,7 @@
           <a href="coming-soon.html?page=Building+materials">Building materials</a>
         </div>
       </div>
-      <div class="nav__item has-dropdown">
+      <div class="nav__item has-dropdown" style="display:none">
         Learn <svg class="chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 4.5l3 3 3-3"/></svg>
         <div class="dropdown">
           <a href="coming-soon.html?page=Blog">Blog</a>
@@ -56,7 +78,7 @@
           <a href="coming-soon.html?page=Reports">Reports</a>
         </div>
       </div>
-      <div class="nav__item has-dropdown">
+      <div class="nav__item has-dropdown" style="display:none">
         Company <svg class="chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 4.5l3 3 3-3"/></svg>
         <div class="dropdown">
           <a href="about.html">About us</a>
@@ -69,7 +91,7 @@
       </div>
     </div>
     <div class="nav__cta">
-      <a class="nav__login" href="coming-soon.html?page=Login">Login</a>
+      <a class="nav__login" href="coming-soon.html?page=Login" style="display:none">Login</a>
       <a class="btn btn--primary btn--sm" href="#waitlist" data-action="waitlist">
         Get started
         <span class="arr"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 9 L9 3 M5 3 H9 V7"/></svg></span>
@@ -104,42 +126,39 @@
   </div>
 </section>
 
-<!-- FEATURE MARQUEE / brand strip -->
+<!-- FEATURE MARQUEE / brand strip
+     Each item gets a single circle dot separator via .marquee__item::after
+     (see assets/site.css), so we don't put manual `·` spans in the HTML —
+     that would double up the dots. Track is duplicated for seamless loop. -->
 <div class="marquee" aria-hidden="true">
   <div class="marquee__track">
-    <span class="marquee__item">Offline Sales</span>
-    <span class="marquee__item">·</span>
-    <span class="marquee__item">Theft Prevention</span>
-    <span class="marquee__item">·</span>
-    <span class="marquee__item">Smart Stock Control</span>
-    <span class="marquee__item">·</span>
-    <span class="marquee__item">Profit Dashboard</span>
-    <span class="marquee__item">·</span>
-    <span class="marquee__item">Online Storefront</span>
-    <span class="marquee__item">·</span>
-    <span class="marquee__item">Multi-Branch Sync</span>
-    <span class="marquee__item">·</span>
-    <span class="marquee__item">Customer Records</span>
-    <span class="marquee__item">·</span>
-    <span class="marquee__item">Payments</span>
-    <span class="marquee__item">·</span>
+    <span class="marquee__item">Offline Point of Sale (POS)</span>
+    <span class="marquee__item">Flexible Unit Sales</span>
+    <span class="marquee__item">Cart Management</span>
+    <span class="marquee__item">Transaction History</span>
+    <span class="marquee__item">Receipt Generation</span>
+    <span class="marquee__item">Real-Time Stock Tracking</span>
+    <span class="marquee__item">Expiry Date Tracking</span>
+    <span class="marquee__item">Stock Adjustments &amp; Counts</span>
+    <span class="marquee__item">Customer Debt Tracking</span>
+    <span class="marquee__item">Online Store</span>
+    <span class="marquee__item">Secure Multi-User Access Control</span>
+    <span class="marquee__item">Multi-Branch Management</span>
+    <span class="marquee__item">Profit &amp; Loss Analysis</span>
     <!-- duplicate for seamless loop -->
-    <span class="marquee__item">Offline Sales</span>
-    <span class="marquee__item">·</span>
-    <span class="marquee__item">Theft Prevention</span>
-    <span class="marquee__item">·</span>
-    <span class="marquee__item">Smart Stock Control</span>
-    <span class="marquee__item">·</span>
-    <span class="marquee__item">Profit Dashboard</span>
-    <span class="marquee__item">·</span>
-    <span class="marquee__item">Online Storefront</span>
-    <span class="marquee__item">·</span>
-    <span class="marquee__item">Multi-Branch Sync</span>
-    <span class="marquee__item">·</span>
-    <span class="marquee__item">Customer Records</span>
-    <span class="marquee__item">·</span>
-    <span class="marquee__item">Payments</span>
-    <span class="marquee__item">·</span>
+    <span class="marquee__item">Offline Point of Sale (POS)</span>
+    <span class="marquee__item">Flexible Unit Sales</span>
+    <span class="marquee__item">Cart Management</span>
+    <span class="marquee__item">Transaction History</span>
+    <span class="marquee__item">Receipt Generation</span>
+    <span class="marquee__item">Real-Time Stock Tracking</span>
+    <span class="marquee__item">Expiry Date Tracking</span>
+    <span class="marquee__item">Stock Adjustments &amp; Counts</span>
+    <span class="marquee__item">Customer Debt Tracking</span>
+    <span class="marquee__item">Online Store</span>
+    <span class="marquee__item">Secure Multi-User Access Control</span>
+    <span class="marquee__item">Multi-Branch Management</span>
+    <span class="marquee__item">Profit &amp; Loss Analysis</span>
   </div>
 </div>
 
@@ -249,6 +268,14 @@
     </div>
   </div>
 </section>
+
+<!-- ============================================================
+     PERSONA INTERLUDE — between Theft prevention and Real profit
+     Full-bleed photo: no padding, no rounding, no shadow.
+     ============================================================ -->
+<figure class="persona-figure reveal">
+  <img src="assets/persona-matriarch.png" alt="A Nigerian supermarket owner standing behind the counter, using SyncSalez on her phone" />
+</figure>
 
 <!-- ============================================================
      4. PROFIT
@@ -363,6 +390,14 @@
     </div>
   </div>
 </section>
+
+<!-- ============================================================
+     PERSONA INTERLUDE — between Stock control and Big CTA
+     Full-bleed photo, 70vh tall, no chrome.
+     ============================================================ -->
+<figure class="persona-figure reveal">
+  <img src="assets/persona-wholesaler.png" alt="A Nigerian wholesaler at a distribution warehouse, using SyncSalez to manage inventory" />
+</figure>
 
 <!-- ============================================================
      6. BIG CTA
@@ -522,6 +557,14 @@
     </div>
   </div>
 </section>
+
+<!-- ============================================================
+     PERSONA INTERLUDE — between Multi-branch and Two-column block
+     Full-bleed photo, 70vh tall, no chrome.
+     ============================================================ -->
+<figure class="persona-figure reveal">
+  <img src="assets/persona-fashion.png" alt="A Nigerian fashion vendor showing colourful fabrics in her boutique" />
+</figure>
 
 <!-- ============================================================
      9. TWO-COLUMN BLOCK (fast checkout + product DB)
@@ -700,6 +743,13 @@
   </div>
 </section>
 
+<!-- ============================================================
+     PERSONA INTERLUDE — between Payments and Testimonials
+     Full-bleed photo, 70vh tall, no chrome.
+     ============================================================ -->
+<figure class="persona-figure reveal">
+  <img src="assets/persona-restaurant.png" alt="A Nigerian food and restaurant operator working the line in his kitchen" />
+</figure>
 
 <!-- ============================================================
      12. TESTIMONIALS
@@ -710,7 +760,7 @@
       <div>
         <div class="meta-row"><span class="meta-num">Real merchants</span></div>
       </div>
-      <h2 class="h-1">Trusted by 10,000+<br/>Nigerian merchants.</h2>
+      <h2 class="h-1">Your fellow merchants<br/>already switched.</h2>
     </div>
     <div class="t-grid">
       <div class="t-card reveal">
@@ -748,29 +798,84 @@
 </section>
 
 <!-- ============================================================
-     13. QUIZ HOOK
+     12b. PLAN HELP — sits above the quiz so visitors who already
+     know they need help can talk to the team without going through
+     the questions.
      ============================================================ -->
 <section class="section">
-  <div class="container">
-    <div class="reveal" style="background:var(--mirror-blue-500);color:#fff;border-radius:24px;padding:64px 48px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;">
-      <div>
-        <div class="meta mb-24" style="color:rgba(255,255,255,0.7);"><span style="background:#fff;width:6px;height:6px;border-radius:99px;margin-right:8px;display:inline-block;"></span>60-second quiz</div>
-        <h2 class="h-1" style="color:#fff;margin-bottom:20px;">What kind of shop owner are you?</h2>
-        <p class="lead" style="color:rgba(255,255,255,0.85);max-width:42ch;margin-bottom:32px;">Take our 60-second quiz. We will recommend the right SyncSalez plan for your business.</p>
-        <a class="btn btn--invert" href="coming-soon.html?page=Take+the+quiz">Take the quiz <span class="arr"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 9 L9 3 M5 3 H9 V7"/></svg></span></a>
-      </div>
-      <div style="background:rgba(255,255,255,0.08);backdrop-filter:blur(12px);border-radius:18px;padding:28px;border:1px solid rgba(255,255,255,0.16);">
-        <div style="font-family:var(--font-action);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.12em;color:rgba(255,255,255,0.6);margin-bottom:12px;">Question 1 of 5</div>
-        <div style="font-family:var(--font-display);font-weight:500;font-size:22px;letter-spacing:-0.02em;margin-bottom:24px;line-height:1.2;">How many branches do you run?</div>
-        <div style="display:flex;flex-direction:column;gap:8px;">
-          <div style="background:rgba(255,255,255,0.10);padding:12px 16px;border-radius:12px;font-family:var(--font-action);font-weight:600;font-size:14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;">Just one<span style="opacity:0.5;">→</span></div>
-          <div style="background:rgba(255,255,255,0.20);padding:12px 16px;border-radius:12px;font-family:var(--font-action);font-weight:600;font-size:14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;border:1px solid rgba(255,255,255,0.4);">2 to 5<span style="opacity:0.7;">→</span></div>
-          <div style="background:rgba(255,255,255,0.10);padding:12px 16px;border-radius:12px;font-family:var(--font-action);font-weight:600;font-size:14px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;">6 or more<span style="opacity:0.5;">→</span></div>
-        </div>
-      </div>
+  <div class="container reveal" style="text-align:center;max-width:720px;margin:0 auto;">
+    <div class="meta mb-24" style="justify-content:center;display:inline-flex;"><span>Need help?</span></div>
+    <h2 class="h-1 mb-24">Is SyncSalez right<br/>for your shop?</h2>
+    <p class="lead" style="margin:0 auto 36px;">Six questions, sixty seconds. We will tell you how well SyncSalez fits your business based on what you sell, how you sell, and what slows you down most.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <button type="button" class="btn btn--primary" data-action="quiz">Take the quiz <span class="arr"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 9 L9 3 M5 3 H9 V7"/></svg></span></button>
+
     </div>
   </div>
 </section>
+
+<!-- ============================================================
+     13. QUIZ MODAL — Is SyncSalez right for your shop?
+     Lives off-screen until [data-action="quiz"] is clicked, then
+     slides in over a dimmed backdrop. Card has a primary white
+     surface so it reads as a focused modal, not an inline section.
+     6 questions → score → route to one of 5 outcomes. All states
+     (intro / active / result) live inside #quiz, swapped by a
+     `data-state` attribute. Logic + content in assets/site.js.
+     ============================================================ -->
+<div class="quiz-modal" id="quiz-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="quiz-modal-title">
+  <div class="quiz-modal__backdrop" data-quiz-modal-close></div>
+  <div class="quiz-modal__panel" role="document">
+    <button class="quiz-modal__close" type="button" aria-label="Close quiz" data-quiz-modal-close>
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3 L11 11 M11 3 L3 11"/></svg>
+    </button>
+    <div class="quiz quiz--light" id="quiz" data-state="intro">
+
+      <!-- INTRO -->
+      <div class="quiz__view quiz__view--intro">
+        <div class="quiz__left">
+          <div class="meta mb-24 quiz__meta"><span class="quiz__dot"></span>60-second quiz</div>
+          <h2 class="h-1 quiz__title" id="quiz-modal-title">Is SyncSalez right<br/>for your shop?</h2>
+          <p class="lead quiz__lead">Six questions, sixty seconds. We'll tell you exactly which plan fits and why — based on what you sell, where you sell, and what slows you down.</p>
+          <button class="btn btn--invert" type="button" data-quiz-start>
+            Take the quiz
+            <span class="arr"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 9 L9 3 M5 3 H9 V7"/></svg></span>
+          </button>
+        </div>
+        <div class="quiz__preview" aria-hidden="true">
+          <div class="quiz__preview-meta">QUESTION 1 OF 6</div>
+          <div class="quiz__preview-q">What do you sell?</div>
+          <div class="quiz__preview-options">
+            <div>Groceries, provisions, or FMCG <span>→</span></div>
+            <div>Medicines or health products <span>→</span></div>
+            <div>Clothing, fashion, or beauty <span>→</span></div>
+            <div class="quiz__preview-more">+6 more</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACTIVE -->
+      <div class="quiz__view quiz__view--active">
+        <div class="quiz__progress">
+          <div class="quiz__progress-row">
+            <span class="quiz__progress-label">QUESTION <span data-q-num>1</span> OF 6</span>
+            <button type="button" class="quiz__back" data-quiz-back aria-label="Previous question">
+              <svg width="14" height="14" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3 L3 6 L9 9"/></svg>
+              Back
+            </button>
+          </div>
+          <div class="quiz__progress-bar"><div class="quiz__progress-fill" data-q-fill></div></div>
+        </div>
+        <h3 class="quiz__q-title" data-q-title>What do you sell?</h3>
+        <div class="quiz__options" data-q-options></div>
+      </div>
+
+      <!-- RESULT -->
+      <div class="quiz__view quiz__view--result" data-q-result></div>
+
+    </div>
+  </div>
+</div>
 
 <!-- ============================================================
      14. PRICING
@@ -884,20 +989,6 @@
 </section>
 END HIDDEN [2026-04-28] -->
 
-<!-- ============================================================
-     15. PLAN HELP
-     ============================================================ -->
-<section class="section">
-  <div class="container reveal" style="text-align:center;max-width:720px;margin:0 auto;">
-    <div class="meta mb-24" style="justify-content:center;display:inline-flex;"><span>Need help?</span></div>
-    <h2 class="h-1 mb-24">Not sure which plan<br/>fits your shop?</h2>
-    <p class="lead" style="margin:0 auto 36px;">Talk to our team. We will look at your shop, your staff size, and your goals, and suggest the right plan. No sales pressure.</p>
-    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-      <a class="btn btn--primary" href="coming-soon.html?page=Find+my+plan">Find my plan <span class="arr"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 9 L9 3 M5 3 H9 V7"/></svg></span></a>
-      <a class="btn btn--ghost" href="coming-soon.html?page=Talk+to+sales">Talk to sales</a>
-    </div>
-  </div>
-</section>
 
 <!-- ============================================================
      16. MORE THAN AN APP
@@ -1003,69 +1094,25 @@ END HIDDEN [2026-04-28] -->
 
 <!-- ============================================================
      18. FINAL CTA
+     Photograph (Hand and iPhone 16 Pro) is absolutely positioned to
+     the bottom-right of the blue frame. The text column constrains to
+     the left so the image has visual room. Section uses overflow:hidden
+     so the image stays inside the rounded blue bounds.
      ============================================================ -->
-<section class="section band-blue" style="padding:96px 0;">
-  <div class="container reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;">
-    <div>
-      <div class="meta mb-24" style="color:rgba(255,255,255,0.7);"><span style="background:#fff;width:6px;height:6px;border-radius:99px;margin-right:8px;display:inline-block;"></span>Get the app</div>
-      <h2 class="h-display" style="color:#fff;margin-bottom:24px;font-size:clamp(40px,6vw,84px);">Your shop's<br/>best friend.</h2>
-      <p class="lead" style="color:rgba(255,255,255,0.85);margin-bottom:36px;">Free to download. Set up in 10 minutes. Sell your first item before lunch.</p>
+<section class="section final-cta" style="padding:96px 0;">
+  <div class="container reveal final-cta__inner">
+    <div class="final-cta__text">
+      <div class="meta mb-24"><span style="background:var(--mirror-blue-500);width:6px;height:6px;border-radius:99px;margin-right:8px;display:inline-block;"></span>Join the waitlist</div>
+      <h2 class="h-display" style="margin-bottom:24px;font-size:clamp(40px,6vw,84px);">Be first to simplify your shop.</h2>
+      <p class="lead" style="margin-bottom:36px;">Join thousands of Nigerian merchants waiting for early access. Get notified when we launch and start selling smarter from day one.</p>
       <div style="display:flex;gap:12px;flex-wrap:wrap;">
-        <a class="btn btn--invert" href="coming-soon.html?page=Get+on+Play+Store" style="padding:14px 24px;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 20.5V3.5c0-.4.2-.7.5-.9l10.7 9.4L3.5 21.4c-.3-.2-.5-.5-.5-.9zm12.4-7.5L18.4 11l2.4 1.4c.5.3.8.8.8 1.4 0 .6-.3 1.1-.8 1.4l-2.4 1.4-3-2.6zM4.4 2.6c.2-.1.5-.1.7 0l11 6.4-2.6 2.3L4.4 2.6zm0 18.8 9.1-8.7 2.6 2.3-11 6.4c-.2.1-.5.1-.7 0z"/></svg>
-          Get on Play Store
-        </a>
-        <a class="btn btn--ghost" href="coming-soon.html?page=App+Store+Coming+soon" style="background:rgba(255,255,255,0.10);color:#fff;border-color:rgba(255,255,255,0.30);">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 12.04c0-2.74 2.24-4.06 2.34-4.13-1.28-1.86-3.27-2.12-3.97-2.15-1.69-.17-3.3.99-4.16.99-.86 0-2.18-.97-3.59-.94-1.85.03-3.55 1.07-4.5 2.72-1.92 3.32-.49 8.24 1.38 10.95.91 1.32 2 2.81 3.42 2.76 1.37-.06 1.89-.89 3.55-.89 1.65 0 2.13.89 3.59.86 1.48-.02 2.42-1.35 3.33-2.68 1.05-1.54 1.48-3.04 1.5-3.12-.03-.01-2.88-1.1-2.91-4.37zM14.5 4.7c.76-.92 1.27-2.2 1.13-3.47-1.09.04-2.42.73-3.2 1.65-.71.81-1.32 2.11-1.16 3.36 1.22.09 2.46-.62 3.23-1.54z"/></svg>
-          App Store · Coming soon
-        </a>
+        <button type="button" class="btn btn--primary" data-action="waitlist" style="padding:14px 24px;">
+          Join the waitlist
+          <span class="arr"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 9 L9 3 M5 3 H9 V7"/></svg></span>
+        </button>
       </div>
     </div>
-    <div style="display:flex;align-items:center;justify-content:center;">
-      <div class="phone" style="background:rgba(0,0,0,0.4);">
-        <div class="phone__screen">
-          <div class="phone__statusbar phone__statusbar--blue"><span>9:41</span><span>•••</span></div>
-          <div class="phone__appbar" style="display:flex;flex-direction:column;align-items:flex-start;gap:8px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;width:100%;">
-              <div style="display:flex;align-items:center;gap:8px;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
-                <h4>Home</h4>
-              </div>
-              <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.18);padding:4px;border-radius:99px;font-size:10px;">
-                <div style="width:24px;height:24px;border-radius:99px;background:#fff;color:var(--mirror-blue-500);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:10px;">OL</div>
-                <span style="padding-right:8px;">Olamide</span>
-              </div>
-            </div>
-          </div>
-          <div style="padding:14px;flex:1;">
-            <div style="font-family:var(--font-display);font-weight:700;font-size:16px;color:var(--slate-900);">Good morning, Olamide</div>
-            <div style="font-family:var(--font-marketing);font-size:11px;color:var(--slate-500);margin-bottom:14px;">Lekki Phase 1 · Synced 2 min ago</div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-              <div style="background:#fff;border-radius:10px;padding:10px;box-shadow:0 1px 3px rgba(15,23,42,0.06);">
-                <div style="font-family:var(--font-action);font-size:9px;text-transform:uppercase;color:var(--slate-500);font-weight:700;letter-spacing:0.1em;">Sales today</div>
-                <div style="font-family:var(--font-display);font-weight:700;font-size:16px;color:var(--slate-900);margin-top:2px;">₦84,250</div>
-                <div style="font-family:var(--font-action);font-size:9px;color:var(--green-700);font-weight:700;">+12.4%</div>
-              </div>
-              <div style="background:#fff;border-radius:10px;padding:10px;box-shadow:0 1px 3px rgba(15,23,42,0.06);">
-                <div style="font-family:var(--font-action);font-size:9px;text-transform:uppercase;color:var(--slate-500);font-weight:700;letter-spacing:0.1em;">Orders</div>
-                <div style="font-family:var(--font-display);font-weight:700;font-size:16px;color:var(--slate-900);margin-top:2px;">27</div>
-                <div style="font-family:var(--font-action);font-size:9px;color:var(--green-700);font-weight:700;">+4 since 12pm</div>
-              </div>
-              <div style="background:#fff;border-radius:10px;padding:10px;box-shadow:0 1px 3px rgba(15,23,42,0.06);">
-                <div style="font-family:var(--font-action);font-size:9px;text-transform:uppercase;color:var(--slate-500);font-weight:700;letter-spacing:0.1em;">Low stock</div>
-                <div style="font-family:var(--font-display);font-weight:700;font-size:16px;color:var(--slate-900);margin-top:2px;">6 items</div>
-                <div style="font-family:var(--font-action);font-size:9px;color:#850A20;font-weight:700;">Restock soon</div>
-              </div>
-              <div style="background:#fff;border-radius:10px;padding:10px;box-shadow:0 1px 3px rgba(15,23,42,0.06);">
-                <div style="font-family:var(--font-action);font-size:9px;text-transform:uppercase;color:var(--slate-500);font-weight:700;letter-spacing:0.1em;">Customers</div>
-                <div style="font-family:var(--font-display);font-weight:700;font-size:16px;color:var(--slate-900);margin-top:2px;">312</div>
-                <div style="font-family:var(--font-action);font-size:9px;color:var(--green-700);font-weight:700;">+18 this week</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <img class="final-cta__image" src="Landin page hero section/Hand and iPhone 16 Pro.png" alt="" aria-hidden="true" />
   </div>
 </section>
 
@@ -1083,7 +1130,7 @@ END HIDDEN [2026-04-28] -->
         <div class="footer__brand-blurb">The best shop management app for Nigerian merchants.</div>
         <a class="btn btn--invert btn--sm" href="#waitlist" data-action="waitlist">Get started <span class="arr"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 9 L9 3 M5 3 H9 V7"/></svg></span></a>
       </div>
-      <div>
+      <div style="display:none">
         <h5>Company</h5>
         <ul>
           <li><a href="about.html">About us</a></li>
@@ -1095,6 +1142,29 @@ END HIDDEN [2026-04-28] -->
         </ul>
       </div>
       <div>
+        <h5>Product</h5>
+        <ul>
+          <li><a href="coming-soon.html?page=Inventory+management">Inventory management</a></li>
+          <li><a href="coming-soon.html?page=Sales+tracking">Sales tracking</a></li>
+          <li><a href="coming-soon.html?page=Customer+management">Customer management</a></li>
+          <li><a href="coming-soon.html?page=Analytics+%26+reports">Analytics &amp; reports</a></li>
+          <li><a href="coming-soon.html?page=Payments+%26+checkout">Payments &amp; checkout</a></li>
+          <li><a href="coming-soon.html?page=Multi-store+management">Multi-store management</a></li>
+          <li><a href="coming-soon.html?page=Supplier+%26+purchase+orders">Supplier &amp; purchase orders</a></li>
+        </ul>
+      </div>
+      <div style="display:none">
+        <h5>For your business</h5>
+        <ul>
+          <li><a href="coming-soon.html?page=Retail+stores">Retail stores</a></li>
+          <li><a href="coming-soon.html?page=Fashion+%26+apparel">Fashion &amp; apparel</a></li>
+          <li><a href="coming-soon.html?page=Food+%26+grocery">Food &amp; grocery</a></li>
+          <li><a href="coming-soon.html?page=Electronics">Electronics</a></li>
+          <li><a href="coming-soon.html?page=Beauty+%26+cosmetics">Beauty &amp; cosmetics</a></li>
+          <li><a href="coming-soon.html?page=Multi-location+merchants">Multi-location merchants</a></li>
+        </ul>
+      </div>
+      <div style="display:none">
         <h5>Resources</h5>
         <ul>
           <li><a href="coming-soon.html?page=SyncSalez+Academy">SyncSalez Academy</a></li>
@@ -1105,7 +1175,7 @@ END HIDDEN [2026-04-28] -->
           <li><a href="coming-soon.html?page=Status+page">Status page</a></li>
         </ul>
       </div>
-      <div>
+      <div style="display:none">
         <h5>Privacy</h5>
         <ul>
           <li><a href="coming-soon.html?page=General+privacy+policy">General privacy policy</a></li>
@@ -1114,7 +1184,7 @@ END HIDDEN [2026-04-28] -->
           <li><a href="coming-soon.html?page=Visitor+privacy+policy">Visitor privacy policy</a></li>
         </ul>
       </div>
-      <div>
+      <div style="display:none">
         <h5>Legal</h5>
         <ul>
           <li><a href="coming-soon.html?page=Terms+of+use">Terms of use</a></li>
@@ -1130,7 +1200,7 @@ END HIDDEN [2026-04-28] -->
       <div>© 2026 SyncSalez Inc. All rights reserved.</div>
       <div class="footer__locale">
         <span style="width:6px;height:6px;border-radius:99px;background:var(--green-500);display:inline-block;"></span>
-        Lagos, Nigeria · NDPR compliant
+        Lagos, Nigeria
       </div>
       <div class="footer__socials">
         <a href="coming-soon.html?page=page" aria-label="X"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18 3h3l-7 8 8 10h-6l-5-6-5 6H3l7-9L3 3h6l4 5 5-5z"/></svg></a>
@@ -1150,6 +1220,6 @@ END HIDDEN [2026-04-28] -->
      the site has it without duplicating ~80 lines of markup. To
      customize, edit MODAL_HTML in assets/site.js. -->
 
-<script src="assets/site.js?v=6"></script>
+<script src="assets/site.js?v=27"></script>
 </body>
 </html>
