@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SyncSalez — Solving your shop problems, one feature at a time.</title>
   <meta name="description" content="Run your physical shop on any Android phone. Sell offline. Catch theft. See your profit in real time. Free to start." />
-  <link rel="stylesheet" href="assets/site.css?v=43" />
+  <link rel="stylesheet" href="assets/site.css?v=50" />
   <link rel="stylesheet" href="assets/animations.css?v=3" />
   <script>document.documentElement.setAttribute('data-theme','light');</script>
 </head>
@@ -92,13 +92,13 @@
       </div>
     </div>
     <div class="nav__cta">
-      <a class="nav__login" href="coming-soon.html?page=Login" style="display:none">Login</a>
+      <a class="nav__login" href="login.html">Login</a>
       <a class="btn btn--primary btn--sm" href="#waitlist" data-action="waitlist">
         Join the waitlist
         <span class="arr"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 9 L9 3 M5 3 H9 V7"/></svg></span>
       </a>
     </div>
-    <button class="nav__hamburger" aria-label="Open menu" style="display:none">
+    <button class="nav__hamburger" aria-label="Open menu">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
     </button>
   </div>
@@ -168,7 +168,7 @@
      ============================================================ -->
 <section class="section">
   <div class="container">
-    <div class="sec-head reveal">
+    <div class="sec-head reveal" style="margin-bottom:0;">
       <div>
         <div class="meta-row">
           <span class="meta-num">Offline first</span>
@@ -238,33 +238,17 @@
     <div class="feature-block feature-block--rev reveal">
       <div class="text">
         <span class="chip mb-24">Theft prevention</span>
-        <h2 class="h-1 mb-24">Catch theft<br/>before it grows.</h2>
-        <p class="lead">Blind Stock Count hides the expected number from your staff. They count what is on the shelf. The app flags any shortage. Most merchants find missing stock worth ₦15,000 to ₦40,000 in their first month.</p>
+        <h2 class="h-1 mb-24">See every stock movement, as it happens.</h2>
+        <p class="lead">The moment a product leaves your shelf, you see it. Sales, returns, adjustments, and transfers between branches. SyncSalez logs who did what, when, and why. Most merchants spot the first missing carton in week one, before a small habit becomes a serious loss.</p>
         <a class="link-arrow" href="features-theft-prevention.html" style="display:none">Learn more about theft prevention <span class="arr-i">↗</span></a>
       </div>
-      <div class="visual theft-visual" style="background:var(--canvas-alt);padding:48px;display:flex;align-items:center;justify-content:center;gap:24px;">
-        <!-- staff view (blind count happening) -->
-        <div style="background:#fff;border-radius:16px;padding:18px;width:200px;box-shadow:0 1px 3px rgba(15,23,42,0.06);">
-          <div style="font-family:var(--font-action);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink-3);margin-bottom:10px;">Staff view</div>
-          <div style="font-family:var(--font-display);font-weight:600;font-size:14px;margin-bottom:10px;">Indomie Chicken 70g</div>
-          <div style="font-family:var(--font-marketing);font-size:11px;color:var(--ink-2);margin-bottom:6px;">Expected on shelf</div>
-          <div style="font-family:var(--font-display);font-weight:600;font-size:24px;color:var(--ink-3);letter-spacing:0.2em;margin-bottom:14px;">• • •</div>
-          <div style="font-family:var(--font-marketing);font-size:11px;color:var(--ink-2);margin-bottom:6px;">Counted</div>
-          <div class="count-input" style="width:100%;padding:8px 10px;border-radius:8px;border:1px solid rgba(15,23,42,0.12);font-family:var(--font-action);font-weight:700;font-size:14px;min-height:32px;display:flex;align-items:center;">
-            <span class="count-typed">42</span><span class="count-caret"></span>
-          </div>
-        </div>
-        <!-- owner view (alert appearing) -->
-        <div class="shortage-card" style="background:#fff;border-radius:16px;padding:18px;width:200px;box-shadow:0 8px 24px -6px rgba(15,23,42,0.18);border-top:3px solid var(--crimson-500);">
-          <div style="font-family:var(--font-action);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--crimson-500);margin-bottom:10px;display:flex;align-items:center;gap:6px;">
-            <span class="alert-dot" style="width:6px;height:6px;border-radius:99px;background:var(--crimson-500);"></span>Discrepancy flagged
-          </div>
-          <div style="font-family:var(--font-display);font-weight:600;font-size:14px;margin-bottom:14px;">Indomie Chicken 70g</div>
-          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--ink-2);margin-bottom:6px;">Expected<span style="color:var(--ink);font-weight:700;">48</span></div>
-          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--ink-2);margin-bottom:6px;">Counted<span style="color:var(--ink);font-weight:700;">42</span></div>
-          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--crimson-500);margin-bottom:14px;">Short<span class="short-amt" style="font-weight:700;">−6 (₦2,100)</span></div>
-          <div style="background:rgba(222,17,53,0.08);color:var(--crimson-500);border-radius:8px;padding:6px 10px;font-family:var(--font-action);font-size:10px;font-weight:700;text-align:center;">Last handled by Tunde</div>
-        </div>
+      <div class="visual theft-visual" style="background:#F8FAFC;padding:0;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+        <iframe
+          src="stock-movement-widget.html?v=3"
+          title="Stock movement live activity feed"
+          loading="lazy"
+          style="width:100%;max-width:560px;height:300px;border:0;display:block;background:#F8FAFC;"
+        ></iframe>
       </div>
     </div>
   </div>
@@ -672,8 +656,8 @@
     <div class="feature-block reveal">
       <div class="text">
         <span class="chip mb-24">Payments</span>
-        <h2 class="h-1 mb-24">Get paid the way<br/>Nigerians pay.</h2>
-        <p class="lead">Bank transfer with instant confirmation. Card tap on your phone. USSD for customers without smartphones. No fake transfer alerts. No waiting to confirm payment.</p>
+        <h2 class="h-1 mb-24">Record every naira, no matter how it comes in.</h2>
+        <p class="lead">Cash, card, or bank transfer. Your staff record the payment, the source, and the time. You see every sale and every payment method on one screen. No more "I sent the alert" arguments. No more missed entries. Your money trail stays clean.</p>
         <a class="link-arrow" href="coming-soon.html?page=Learn+more+about+payments" style="display:none">Learn more about payments <span class="arr-i">↗</span></a>
       </div>
       <div class="visual payments-visual" style="background:var(--canvas-alt);padding:32px;display:flex;flex-direction:column;gap:14px;">
@@ -1050,10 +1034,6 @@ END HIDDEN [2026-04-28] -->
         </div>
       </div>
       <div class="faq__list reveal">
-        <div class="faq__item is-open">
-          <button class="faq__q">Is SyncSalez free?<span class="pm"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 7h10M7 2v10"/></svg></span></button>
-          <div class="faq__a"><div class="faq__a-inner"><p>Yes. The Free plan covers up to 500 products and works forever. You only pay if you want theft prevention, an online store, or multiple branches.</p></div></div>
-        </div>
         <div class="faq__item">
           <button class="faq__q">Does it work without internet?<span class="pm"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 7h10M7 2v10"/></svg></span></button>
           <div class="faq__a"><div class="faq__a-inner"><p>Yes. Every sale records on your phone instantly. The app syncs when your network returns.</p></div></div>
@@ -1065,14 +1045,6 @@ END HIDDEN [2026-04-28] -->
         <div class="faq__item">
           <button class="faq__q">What phones work with SyncSalez?<span class="pm"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 7h10M7 2v10"/></svg></span></button>
           <div class="faq__a"><div class="faq__a-inner"><p>Any Android phone with 2GB RAM or more. Tecno, Infinix, Itel, Samsung, all supported. iOS coming soon.</p></div></div>
-        </div>
-        <div class="faq__item">
-          <button class="faq__q">How long does setup take?<span class="pm"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 7h10M7 2v10"/></svg></span></button>
-          <div class="faq__a"><div class="faq__a-inner"><p>Most shops finish setup in under 10 minutes. Search for your products in our database, set your prices, add your staff. Start selling.</p></div></div>
-        </div>
-        <div class="faq__item">
-          <button class="faq__q">Do you charge a transaction fee?<span class="pm"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 7h10M7 2v10"/></svg></span></button>
-          <div class="faq__a"><div class="faq__a-inner"><p>Only if you accept payment through SyncSalez. The fee is 1.5%, capped at ₦2,000 per transaction. You skip the fee by using your existing bank transfer or card terminal.</p></div></div>
         </div>
         <div class="faq__item">
           <button class="faq__q">Can I switch from another app?<span class="pm"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 7h10M7 2v10"/></svg></span></button>
@@ -1099,7 +1071,7 @@ END HIDDEN [2026-04-28] -->
     <div class="final-cta__text">
       <div class="meta mb-24"><span style="background:var(--mirror-blue-500);width:6px;height:6px;border-radius:99px;margin-right:8px;display:inline-block;"></span>Join the waitlist</div>
       <h2 class="h-display" style="margin-bottom:24px;font-size:clamp(40px,6vw,84px);">Be first to simplify your shop.</h2>
-      <p class="lead" style="margin-bottom:36px;">Join thousands of Nigerian merchants waiting for early access. Get notified when we launch and start selling smarter from day one.</p>
+      <p class="lead" style="margin-bottom:36px;">Join eager Nigerian merchants waiting for early access. Get notified when we launch and start selling smarter from day one.</p>
       <div style="display:flex;gap:12px;flex-wrap:wrap;">
         <button type="button" class="btn btn--primary" data-action="waitlist" style="padding:14px 24px;">
           Join the waitlist
@@ -1215,6 +1187,6 @@ END HIDDEN [2026-04-28] -->
      the site has it without duplicating ~80 lines of markup. To
      customize, edit MODAL_HTML in assets/site.js. -->
 
-<script src="assets/site.js?v=31"></script>
+<script src="assets/site.js?v=37"></script>
 </body>
 </html>

@@ -44,14 +44,31 @@
     top.appendChild(closeBtn);
     overlay.appendChild(top);
 
-    // body — clone each .nav__item
+    // We mirror desktop visibility — anything hidden on desktop (inline
+    // style="display:none" or the hidden attribute) stays out of the mobile
+    // menu too.
+    const isHidden = el => !el || el.hasAttribute('hidden') ||
+                           (el.style && el.style.display === 'none');
+
+    // Inner column — vertically centred. Holds either the visible nav links
+    // (when there are any) or the editorial brand block (when desktop nav is
+    // empty, which is the current state — waitlist phase).
+    const inner = document.createElement('div');
+    inner.className = 'nav-overlay__inner';
+
+    let stagger = 0;
+    const setStagger = el => { el.style.setProperty('--idx', ++stagger); };
+
+    // Body — clone each visible .nav__item.
     const body = document.createElement('div');
     body.className = 'nav-overlay__body';
     if (links) {
       Array.from(links.children).forEach(item => {
+        if (isHidden(item)) return;
         if (item.classList && item.classList.contains('has-dropdown')) {
           const group = document.createElement('div');
           group.className = 'nav-overlay__group';
+          setStagger(group);
           const dd = item.querySelector('.dropdown');
           const firstTextNode = Array.from(item.childNodes).find(n => n.nodeType === 3 && n.textContent.trim());
           const headLabel = (firstTextNode ? firstTextNode.textContent : item.textContent).trim();
@@ -76,32 +93,74 @@
           const a = item.cloneNode(true);
           a.className = 'nav-overlay__leaf';
           a.addEventListener('click', closeMenu);
+          setStagger(a);
           body.appendChild(a);
         }
       });
     }
-    overlay.appendChild(body);
+    const hasBodyItems = body.children.length > 0;
+    if (hasBodyItems) inner.appendChild(body);
 
-    // foot — primary CTA + login
-    const foot = document.createElement('div');
-    foot.className = 'nav-overlay__foot';
+    // Editorial brand block — only when the desktop nav has no visible links.
+    // Gives the menu purpose and presence instead of a sea of empty space.
+    if (!hasBodyItems) {
+      const eyebrow = document.createElement('div');
+      eyebrow.className = 'nav-overlay__eyebrow';
+      eyebrow.innerHTML = '<span class="nav-overlay__pulse" aria-hidden="true"></span>Coming soon';
+      setStagger(eyebrow);
+      inner.appendChild(eyebrow);
+
+      const headline = document.createElement('h2');
+      headline.className = 'nav-overlay__headline';
+      headline.innerHTML = 'Save your<br/>spot.';
+      setStagger(headline);
+      inner.appendChild(headline);
+
+      const lede = document.createElement('p');
+      lede.className = 'nav-overlay__lede';
+      lede.textContent = 'SyncSalez is opening access in waves. Join the waitlist and be first when your window opens.';
+      setStagger(lede);
+      inner.appendChild(lede);
+    }
+
+    // CTA pair — primary button + login link, mirrored from desktop CTA.
     if (cta) {
-      const login = cta.querySelector('.nav__login');
+      const ctas = document.createElement('div');
+      ctas.className = 'nav-overlay__ctas';
       const primary = cta.querySelector('.btn--primary');
-      if (primary) {
+      const login = cta.querySelector('.nav__login');
+      if (primary && !isHidden(primary)) {
         const cloned = primary.cloneNode(true);
         cloned.classList.remove('btn--sm');
         cloned.addEventListener('click', closeMenu);
-        foot.appendChild(cloned);
+        ctas.appendChild(cloned);
       }
-      if (login) {
+      if (login && !isHidden(login)) {
         const cloned = login.cloneNode(true);
         cloned.className = 'nav-overlay__login';
         cloned.addEventListener('click', closeMenu);
-        foot.appendChild(cloned);
+        ctas.appendChild(cloned);
+      }
+      if (ctas.children.length > 0) {
+        setStagger(ctas);
+        inner.appendChild(ctas);
       }
     }
-    overlay.appendChild(foot);
+
+    overlay.appendChild(inner);
+
+    // Watermark — giant SyncSalez wordmark anchoring the bottom. Echoes the
+    // existing footer wordmark pattern. Only shown when there are no body
+    // links (the editorial-only state) so it never competes with content.
+    if (!hasBodyItems) {
+      const watermark = document.createElement('div');
+      watermark.className = 'nav-overlay__watermark';
+      watermark.setAttribute('aria-hidden', 'true');
+      watermark.textContent = 'SyncSalez.';
+      setStagger(watermark);
+      overlay.appendChild(watermark);
+    }
+
     document.body.appendChild(overlay);
   }
   function openMenu() {
@@ -244,29 +303,29 @@
       <form class="waitlist__form" id="waitlist-form" novalidate>
         <div class="field-row" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start;">
           <div class="field" data-field="firstName" style="min-width:0;">
-            <label for="wl-fname">First name</label>
+            <label for="wl-fname">First name<span class="field__req" aria-hidden="true">*</span></label>
             <input id="wl-fname" name="firstName" type="text" autocomplete="given-name" required />
           </div>
           <div class="field" data-field="lastName" style="min-width:0;">
-            <label for="wl-lname">Last name</label>
+            <label for="wl-lname">Last name<span class="field__req" aria-hidden="true">*</span></label>
             <input id="wl-lname" name="lastName" type="text" autocomplete="family-name" required />
           </div>
         </div>
         <div class="field" data-field="email">
-          <label for="wl-email">Email</label>
+          <label for="wl-email">Email<span class="field__req" aria-hidden="true">*</span></label>
           <input id="wl-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required />
           <small class="field__hint">We'll send your confirmation here.</small>
         </div>
         <div class="field" data-field="phone">
-          <label for="wl-phone">WhatsApp number</label>
+          <label for="wl-phone">WhatsApp number<span class="field__req" aria-hidden="true">*</span></label>
           <input id="wl-phone" name="phone" type="tel" autocomplete="tel" placeholder="+234 803 000 0000" required />
         </div>
         <div class="field" data-field="location">
-          <label for="wl-location">Location</label>
+          <label for="wl-location">Location<span class="field__req" aria-hidden="true">*</span></label>
           <input id="wl-location" name="location" type="text" placeholder="City, State" required />
         </div>
         <div class="field" data-field="category">
-          <label for="wl-category">Business category</label>
+          <label for="wl-category">Business category<span class="field__req" aria-hidden="true">*</span></label>
           <select id="wl-category" name="category" required>
             <option value="">Select your business type</option>
             <option>Provision stores &amp; supermarkets</option>
@@ -279,7 +338,7 @@
           </select>
         </div>
 
-        <button type="submit" class="waitlist__submit">
+        <button type="submit" class="waitlist__submit" disabled>
           <span class="waitlist__submit-text">Join the waitlist</span>
           <span class="waitlist__submit-loading">
             <span class="spinner" aria-hidden="true"></span>
@@ -338,6 +397,54 @@
     error:   modal.querySelector('[data-view="error"]'),
   };
   const errorMsg = modal.querySelector('.waitlist__error-msg');
+  const successTitle = views.success.querySelector('.waitlist__title');
+  const successLead  = views.success.querySelector('.waitlist__lead');
+
+  // Two flavours of the success view — fresh signup vs. already on the list.
+  // Both titles are templates: `{firstName}` is replaced with what the user
+  // typed on submit. If we somehow don't have a name, any whitespace/comma
+  // immediately preceding the placeholder is stripped along with it so the
+  // headline still reads cleanly (defensive only — validation guarantees
+  // a non-empty firstName in practice).
+  const SUCCESS_DEFAULT = {
+    title: "Locked in, {firstName}",
+    lead:  "Your spot is saved. Sit tight, we're building something worth the wait.",
+  };
+  const SUCCESS_DUPLICATE = {
+    title: "Nice to see you again {firstName}",
+    lead:  "You joined the waitlist already. Your spot is safe, we don't lose track of the early ones.",
+  };
+  function setSuccessCopy(duplicate, firstName) {
+    const c = duplicate ? SUCCESS_DUPLICATE : SUCCESS_DEFAULT;
+    const fname = (firstName || '').trim();
+    successTitle.textContent = fname
+      ? c.title.replace('{firstName}', fname)
+      : c.title.replace(/[\s,]*\{firstName\}/, '');
+    successLead.textContent  = c.lead;
+  }
+
+  // Names of the form controls we always require. Used to (a) drive the
+  // disabled state of the submit button so the user can't click it until
+  // every field has a value, and (b) double-check on the client side
+  // before we send anything to the backend.
+  const REQUIRED_FIELDS = ['firstName', 'lastName', 'email', 'phone', 'location', 'category'];
+  function allRequiredFilled() {
+    return REQUIRED_FIELDS.every((name) => {
+      const el = form.elements[name];
+      if (!el) return false;
+      return String(el.value || '').trim().length > 0;
+    });
+  }
+  function updateSubmitButtonState() {
+    // Don't fight the loading state — while a submit is in flight the
+    // button is intentionally disabled and we leave it alone.
+    if (submitBtn.classList.contains('is-loading')) return;
+    submitBtn.disabled = !allRequiredFilled();
+  }
+  form.addEventListener('input', updateSubmitButtonState);
+  form.addEventListener('change', updateSubmitButtonState);
+  // Initial state — disabled until the user fills everything.
+  submitBtn.disabled = true;
 
   let lastFocus = null;
   // Holds the quiz context (vertical, pain, score, priority tag, etc.)
@@ -367,7 +474,7 @@
     lastFocus = trigger || document.activeElement;
     showView('form');
     submitBtn.classList.remove('is-loading');
-    submitBtn.disabled = false;
+    updateSubmitButtonState();
     modal.setAttribute('aria-hidden', 'false');
     document.body.classList.add('waitlist-open');
     setTimeout(() => {
@@ -416,7 +523,7 @@
       e.preventDefault();
       showView('form');
       submitBtn.classList.remove('is-loading');
-      submitBtn.disabled = false;
+      updateSubmitButtonState();
     }
   });
 
@@ -427,25 +534,36 @@
     }
   });
 
-  // Lightweight client-side validation. Required fields depend on the
-  // capture mode set by the trigger that opened the modal.
+  // Client-side validation. Every field is required regardless of how the
+  // modal was opened — the disabled-until-filled submit button means we
+  // should never see these errors trigger in practice, but keep them as
+  // a fallback in case JS state drifts.
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   function validate(data) {
-    const mode = modal.dataset.capture || 'full';
     if (!data.firstName || data.firstName.trim().length < 1) return 'Please enter your first name.';
-    if (!data.lastName || data.lastName.trim().length < 1) return 'Please enter your last name.';
-    if (!data.email || !EMAIL_RE.test(data.email)) return 'Please enter a valid email address.';
-    if (mode !== 'email') {
-      // very forgiving phone check: must contain at least 8 digits
-      const digits = (data.phone || '').replace(/\D/g, '');
-      if (digits.length < 8) return 'Please enter a valid WhatsApp number.';
-    }
-    if (mode === 'full') {
-      if (!data.location || data.location.trim().length < 2) return 'Please enter your location.';
-      if (!data.category) return 'Please pick a business category.';
-    }
+    if (!data.lastName  || data.lastName.trim().length  < 1) return 'Please enter your last name.';
+    if (!data.email     || !EMAIL_RE.test(data.email))       return 'Please enter a valid email address.';
+    const digits = (data.phone || '').replace(/\D/g, '');
+    if (digits.length < 8) return 'Please enter a valid WhatsApp number.';
+    if (!data.location  || data.location.trim().length  < 2) return 'Please enter your location.';
+    if (!data.category)                                       return 'Please pick a business category.';
     return null;
   }
+
+  // Disable submit until every required field has a value -------
+  // Visual cue (red asterisk in each label) is in the markup; this
+  // is the gate that prevents an empty submission. Runs on every
+  // input/change event from the form.
+  const requiredFields = form.querySelectorAll('[required]');
+  function syncWaitlistSubmit() {
+    if (submitBtn.classList.contains('is-loading')) return;
+    const allFilled = Array.from(requiredFields)
+      .every((el) => (el.value || '').trim().length > 0);
+    submitBtn.disabled = !allFilled;
+  }
+  form.addEventListener('input', syncWaitlistSubmit);
+  form.addEventListener('change', syncWaitlistSubmit);
+  syncWaitlistSubmit();
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -481,6 +599,7 @@
     submitBtn.disabled = true;
 
     try {
+      let isDuplicate = false;
       if (!isConfigured) {
         // Simulate success in dev (no backend wired up yet)
         await new Promise(r => setTimeout(r, 1200));
@@ -496,7 +615,12 @@
         if (!res.ok) throw new Error('HTTP ' + res.status);
         const out = await res.json().catch(() => ({ ok: true }));
         if (out && out.ok === false) throw new Error(out.error || 'Submission failed');
+        // Backend reports duplicate when the email or phone is already on
+        // the waitlist sheet. Older deployments won't send this flag —
+        // treat any missing flag as "fresh signup" so we degrade safely.
+        isDuplicate = !!(out && out.duplicate);
       }
+      setSuccessCopy(isDuplicate, data.firstName);
       showView('success');
     } catch (err) {
       console.error('[waitlist] submit failed', err);
@@ -504,7 +628,7 @@
       showView('error');
     } finally {
       submitBtn.classList.remove('is-loading');
-      submitBtn.disabled = false;
+      updateSubmitButtonState();
     }
   });
 

@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Stock movement — SyncSalez</title>
+<style>
+  :root {
+    --bg: #F8FAFC;
+    --card: #FFFFFF;
+    --border: #E2E8F0;
+    --border-strong: #CBD5E1;
+    --ink: #0F172A;
+    --ink-2: #64748B;
+    --ink-3: #94A3B8;
+    --green: #10B981;
+    --amber: #F59E0B;
+    --amber-soft: #FEF3C7;
+    --amber-deep: #92400E;
+    --red: #EF4444;
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", "Cascadia Code", Menlo, Consolas, "Liberation Mono", monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    font-family: var(--font-sans);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 0 16px;
+  }
+
+  .widget {
+    width: 100%;
+    max-width: 560px;
+    background: var(--bg);
+  }
+
+  /* ========== LOG ========== */
+  .log {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .entry {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 250ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 250ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 250ms ease;
+    position: relative;
+    will-change: opacity, transform;
+  }
+
+  .entry.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .entry.is-aged { opacity: 0.85; }
+
+  .entry__dot {
+    flex-shrink: 0;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--green);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12);
+  }
+
+  .entry.is-flagged .entry__dot {
+    background: var(--amber);
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.18);
+  }
+
+  .entry__info {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .entry__product {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+    line-height: 1.3;
+    margin-bottom: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .entry__action {
+    font-size: 12px;
+    color: var(--ink-2);
+    line-height: 1.3;
+  }
+
+  .entry__action .qty {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    color: var(--ink);
+    margin-left: 2px;
+  }
+
+  .entry__meta {
+    flex-shrink: 0;
+    text-align: right;
+  }
+
+  .entry__staff {
+    font-size: 12px;
+    color: var(--ink);
+    font-weight: 500;
+    line-height: 1.3;
+    margin-bottom: 3px;
+  }
+
+  .entry__time {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-2);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  .entry__badge {
+    flex-shrink: 0;
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--amber-deep);
+    background: var(--amber-soft);
+    padding: 4px 8px;
+    border-radius: 4px;
+    opacity: 0;
+    transform: translateY(2px);
+    transition:
+      opacity 200ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+    line-height: 1.2;
+  }
+
+  .entry__badge.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ========== AMBER PULSE (opacity breath, fixed spread) ========== */
+  @keyframes amberPulse {
+    0%   { box-shadow: 0 0 0 4px rgba(245, 158, 11, 0),    0 1px 2px rgba(15, 23, 42, 0.04); }
+    50%  { box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.28), 0 1px 2px rgba(15, 23, 42, 0.04); }
+    100% { box-shadow: 0 0 0 4px rgba(245, 158, 11, 0),    0 1px 2px rgba(15, 23, 42, 0.04); }
+  }
+
+  .entry.is-pulsing {
+    animation: amberPulse 600ms ease-out 1;
+  }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 460px) {
+    .entry__product { font-size: 13px; }
+    .entry__staff { font-size: 11px; }
+  }
+
+  /* ========== REDUCED MOTION ========== */
+  @media (prefers-reduced-motion: reduce) {
+    .entry {
+      transform: none !important;
+      transition: opacity 300ms ease;
+    }
+    .entry.is-pulsing { animation: none; }
+    .entry__badge { transform: none !important; }
+  }
+</style>
+</head>
+<body>
+  <main class="widget" role="region" aria-label="Stock movement live activity feed">
+    <div class="log" id="log">
+      <article class="entry" data-entry="0">
+        <span class="entry__dot" aria-hidden="true"></span>
+        <div class="entry__info">
+          <div class="entry__product">Peak Milk 400g</div>
+          <div class="entry__action">Sale<span class="qty">−12 units</span></div>
+        </div>
+        <div class="entry__meta">
+          <div class="entry__staff">Bola Adeyemi</div>
+          <div class="entry__time">9:14 AM</div>
+        </div>
+      </article>
+
+      <article class="entry" data-entry="1">
+        <span class="entry__dot" aria-hidden="true"></span>
+        <div class="entry__info">
+          <div class="entry__product">Indomie Chicken 70g (carton)</div>
+          <div class="entry__action">Stock adjustment<span class="qty">−6 units</span></div>
+        </div>
+        <div class="entry__meta">
+          <div class="entry__staff">Tunde Ojo</div>
+          <div class="entry__time">10:02 AM</div>
+        </div>
+      </article>
+
+      <article class="entry is-flagged" data-entry="2">
+        <span class="entry__dot" aria-hidden="true"></span>
+        <div class="entry__info">
+          <div class="entry__product">Ariel Detergent 1kg</div>
+          <div class="entry__action">Adjustment<span class="qty">−9 units</span></div>
+        </div>
+        <div class="entry__meta">
+          <div class="entry__staff">Tunde Ojo</div>
+          <div class="entry__time">10:47 AM</div>
+        </div>
+        <div class="entry__badge">Flagged</div>
+      </article>
+
+      <article class="entry is-flagged" data-entry="3">
+        <span class="entry__dot" aria-hidden="true"></span>
+        <div class="entry__info">
+          <div class="entry__product">Peak Milk 400g</div>
+          <div class="entry__action">Adjustment<span class="qty">−8 units</span></div>
+        </div>
+        <div class="entry__meta">
+          <div class="entry__staff">Tunde Ojo</div>
+          <div class="entry__time">11:15 AM</div>
+        </div>
+        <div class="entry__badge">Flagged</div>
+      </article>
+    </div>
+  </main>
+
+<script>
+(function() {
+  'use strict';
+
+  var log = document.getElementById('log');
+  var entries = log.querySelectorAll('.entry');
+  var timeouts = [];
+
+  function setT(fn, ms) {
+    var id = setTimeout(fn, ms);
+    timeouts.push(id);
+    return id;
+  }
+
+  function clearAll() {
+    for (var i = 0; i < timeouts.length; i++) clearTimeout(timeouts[i]);
+    timeouts.length = 0;
+  }
+
+  function reset() {
+    for (var i = 0; i < entries.length; i++) {
+      var e = entries[i];
+      e.classList.remove('is-visible', 'is-aged', 'is-pulsing');
+      var b = e.querySelector('.entry__badge');
+      if (b) b.classList.remove('is-visible');
+    }
+  }
+
+  function show(idx) {
+    // Age all earlier entries to 0.85 opacity
+    for (var i = 0; i < idx; i++) {
+      entries[i].classList.add('is-aged');
+    }
+    var entry = entries[idx];
+    entry.classList.add('is-visible');
+    // Badge fades in 150ms after card settles
+    var badge = entry.querySelector('.entry__badge');
+    if (badge) {
+      setT(function() { badge.classList.add('is-visible'); }, 150);
+    }
+  }
+
+  function pulseFlagged() {
+    for (var i = 0; i < entries.length; i++) {
+      var e = entries[i];
+      if (e.classList.contains('is-flagged') && e.classList.contains('is-visible')) {
+        // Restart animation by removing + reflow + adding
+        e.classList.remove('is-pulsing');
+        // Force reflow so the animation can re-trigger on next loop
+        // eslint-disable-next-line no-unused-expressions
+        e.offsetWidth;
+        e.classList.add('is-pulsing');
+      }
+    }
+  }
+
+  function runSequence() {
+    clearAll();
+    reset();
+
+    // Step 1 — 0s: Peak Milk, Sale (green)
+    setT(function() { show(0); }, 0);
+
+    // Step 2 — 2s: Indomie, Adjustment (green)
+    setT(function() { show(1); }, 2000);
+
+    // Step 3 — 4s: Ariel, Adjustment (flagged)
+    setT(function() { show(2); }, 4000);
+
+    // Step 4 — 6s: Peak Milk, Adjustment (flagged)
+    setT(function() { show(3); }, 6000);
+
+    // Step 5 — 8s: pulse flagged entries once
+    setT(pulseFlagged, 8000);
+
+    // Loop at 9s
+    setT(runSequence, 9000);
+  }
+
+  // Pause when tab is hidden, resume when visible
+  document.addEventListener('visibilitychange', function() {
+    if (document.hidden) {
+      clearAll();
+    } else {
+      runSequence();
+    }
+  });
+
+  runSequence();
+})();
+</script>
+</body>
+</html>
